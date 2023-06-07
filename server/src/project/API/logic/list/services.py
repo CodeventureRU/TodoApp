@@ -1,4 +1,4 @@
-from API.models import List, User
+from API.models import List
 
 
 def create_list(validated_data):
