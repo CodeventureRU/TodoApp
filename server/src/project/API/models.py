@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinLengthValidator
+from ordered_model.models import OrderedModel
 
 
 class CustomUserManager(BaseUserManager):
@@ -41,10 +42,14 @@ class Tag(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags')
 
 
-class Task(models.Model):
+class Task(OrderedModel):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     deadline = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
-    tags = models.ManyToManyField(Tag)
-    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='tasks')
+    tags = models.ManyToManyField(Tag, blank=True)
+    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='list_tasks')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tasks')
+
+    class Meta:
+        ordering = ('order',)
