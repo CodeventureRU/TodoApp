@@ -2,8 +2,17 @@ from rest_framework import serializers
 from API.models import List, User
 
 
-class ListSerializer(serializers.ModelSerializer):
+class ListLCSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all())
     class Meta:
         model = List
-        fields = ['name', 'author']
+        fields = ['id', 'name', 'author']
+        extra_kwargs = {
+            'author': {'write_only': True},
+        }
+
+
+class ListRUDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = List
+        fields = ['id', 'name']
