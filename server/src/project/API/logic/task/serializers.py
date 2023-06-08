@@ -15,7 +15,8 @@ class TaskLCSerializer(serializers.ModelSerializer):
             'deadline': {'required': False},
             'tags': {'required': False, 'write_only': True},
             'tags_for_read': {'source': 'tags_for_read', 'read_only': True},
-            'author': {'write_only': True},
+            'list': {'write_only': True},
+            'author': {'write_only': True}
         }
 
     def get_tags_for_read(self, obj):

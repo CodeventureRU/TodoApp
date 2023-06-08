@@ -23,7 +23,7 @@ class ListLCView(APIView):
         return Response(response, status=status.HTTP_201_CREATED)
 
     def get(self, request):
-        lists = List.objects.filter(author=request.user)
+        lists = List.objects.prefetch_related('list_tasks').filter(author=request.user)
         serializer = ListLCSerializer(lists, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
