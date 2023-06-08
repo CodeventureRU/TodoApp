@@ -1,0 +1,48 @@
+.myCheckbox {
+    display: none;
+    user-select: none;
+}
+
+.myCheckboxLabel {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    position: relative;
+    padding-left: 30px;
+}
+
+.myCheckboxLabel:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(var(--gray-rgb), 1);
+    cursor: pointer;
+}
+
+.myCheckboxLabel:after {
+    position: absolute;
+    content: '';
+    width: 8px;
+    height: 8px;
+    top: 7px;
+    left: 7px;
+    background: transparent;
+    border-radius: 6px;
+}
+
+.myCheckbox:checked ~ .myCheckboxLabel:before {
+    background: rgba(var(--violet-rgb), 0.1);
+    border-color: rgba(var(--violet-rgb), 1);
+}
+
+.myCheckbox:checked ~ .myCheckboxLabel:after {
+    background: rgba(var(--violet-rgb), 1);
+}
+
+.myCheckboxGroup {
+    margin-bottom: var(--blocks-margin);
+}

@@ -1,0 +1,33 @@
+.ListHeader, .ListFooter {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: var(--inner-blocks-margin);
+    color: rgba(var(--violet-rgb), 1);
+    background: rgba(var(--violet-rgb), 0.09);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(var(--violet-rgb), 1);
+}
+
+.ListFooter {
+    padding: 11px 20px;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+    cursor: pointer;
+    background: transparent;
+}
+
+.List {
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+}
+
+.ListTasks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--inner-blocks-margin);
+    padding: var(--inner-blocks-margin) 0;
+}

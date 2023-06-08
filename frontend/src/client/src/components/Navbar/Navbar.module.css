@@ -1,0 +1,19 @@
+.Navbar {
+    padding: var(--blocks-margin) 0;
+    background: white;
+    box-shadow: 0 4px 10px rgba(201, 201, 201, 0.2);
+}
+
+.NavbarWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.NavbarMenu {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    gap: var(--inner-blocks-margin);
+    align-items: center;
+}
