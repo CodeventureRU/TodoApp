@@ -6,7 +6,7 @@ from API.models import Task
 from API.permissions import IsAuthor
 from API.logic.functions import get_data
 from API.logic.task.serializers import TaskLCSerializer, TaskRUDSerializer
-from API.logic.task.services import create_task
+from API.logic.task.services import create_task, move_task
 
 
 class TaskLCView(APIView):
@@ -32,3 +32,11 @@ class TaskRUDView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskRUDSerializer
     permission_classes = [IsAuthor]
     queryset = Task.objects.all()
+
+    def patch(self, request, pk, *args, **kwargs):
+        data = get_data(request)
+        if 'list_id' not in data:
+            return super().patch(self, *args, **kwargs)
+        task = Task.objects.get(pk=pk)
+        move_task(task, data['list_id'], task.list_id, data['order'])
+        return Response(status=status.HTTP_204_NO_CONTENT)
