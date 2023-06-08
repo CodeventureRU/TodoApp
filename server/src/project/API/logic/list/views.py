@@ -16,7 +16,7 @@ class ListLCView(APIView):
     def post(self, request):
         data = get_data(request)
         user = request.user
-        data['author'] = user.id
+        data['author'] = user
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         response = create_list(data)
