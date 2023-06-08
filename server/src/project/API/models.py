@@ -60,7 +60,7 @@ class Task(OrderedModel):
                 'description': self.description,
                 'deadline': self.deadline,
                 'completed': self.completed,
-                'list': {'id': self.list.id,
+                'list': {'id': self.list_id,
                          'name': self.list.name},
                 'tags': tags,
                 'order': self.order}
