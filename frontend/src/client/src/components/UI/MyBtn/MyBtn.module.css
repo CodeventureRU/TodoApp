@@ -1,0 +1,17 @@
+.myBtn {
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    padding: 15px 30px;
+    background: rgba(var(--violet-rgb), 1);
+    border-radius: var(--border-radius);
+    font-size: var(--regular-font-size);
+    text-align: center;
+    outline: none;
+    border: none;
+    color: white;
+}
+
+.small {
+    padding: 7px 15px;
+}
