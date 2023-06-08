@@ -1,0 +1,27 @@
+.Lists {
+    display: flex;
+    gap: var(--blocks-margin);
+}
+
+.ListAddButton {
+    padding: 11px 20px;
+    display: flex;
+    align-items: center;
+    gap: var(--inner-blocks-margin);
+    color: rgba(var(--violet-rgb), 1);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(var(--violet-rgb), 1);
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+    cursor: pointer;
+    background: transparent;
+    width: 300px;
+}
+
+.ListsContainer {
+    display: flex;
+    gap: var(--blocks-margin);
+    align-items: flex-start;
+}

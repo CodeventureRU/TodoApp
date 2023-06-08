@@ -1,0 +1,39 @@
+.Task {
+    display: flex;
+    align-items: center;
+    gap: var(--inner-blocks-margin);
+    padding: 16px 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(var(--gray-rgb), 1);
+}
+
+.CompletedTask {
+    border: 1px solid rgba(var(--green-rgb), 1);
+}
+
+.TaskIndicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    box-shadow: 0 0 0 2px rgba(var(--green-rgb), 1) inset;
+    cursor: pointer;
+    position: relative;
+}
+
+.TaskIndicator img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.TaskContent {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.CompletedTask .TaskName {
+    color: rgba(var(--green-rgb), 1);
+}
