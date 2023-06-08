@@ -19,7 +19,7 @@ class TaskLCSerializer(serializers.ModelSerializer):
         }
 
     def get_tags_for_read(self, obj):
-        tags = obj.tags.values_list('name', flat=True)
+        tags = obj.tags.values('id', 'name')
         return tags
 
 
