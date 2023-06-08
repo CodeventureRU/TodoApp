@@ -1,9 +1,9 @@
 import React from 'react';
 import cl from "./MyTextarea.module.css";
 
-const MyTextarea = ({value, setValue, name, label="", ...props}) => {
+const MyTextarea = ({value, setValue, name, label="", group=false, ...props}) => {
     return (
-        <div>
+        <div className={group ? cl.myTextareaGroup : ""}>
             {
                 label && <label className={cl.myTextareaInput} htmlFor={name}>{label}</label>
             }

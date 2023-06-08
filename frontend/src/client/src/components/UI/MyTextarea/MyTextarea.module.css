@@ -1,13 +1,19 @@
 .myTextarea {
     display: block;
+    width: 100%;
     padding: 15px 30px;
     border-radius: var(--border-radius);
     font-size: var(--regular-font-size);
     border: 1px solid rgba(var(--gray-rgb), 1);
     resize: none;
+    outline: none;
 }
 
 .myTextareaInput {
     display: block;
     margin-bottom: 10px;
+}
+
+.myTextareaGroup {
+    margin-bottom: var(--blocks-margin);
 }
