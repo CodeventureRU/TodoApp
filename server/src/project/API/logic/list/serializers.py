@@ -4,13 +4,12 @@ from API.logic.task.serializers import TaskLCSerializer
 
 
 class ListLCSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all())
+    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all(), write_only=True)
     list_tasks = TaskLCSerializer(many=True, read_only=True)
     class Meta:
         model = List
         fields = ['id', 'name', 'list_tasks', 'author']
         extra_kwargs = {
-            'author': {'write_only': True},
             'tasks': {'read_only': True}
         }
 

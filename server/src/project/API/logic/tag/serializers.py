@@ -3,14 +3,11 @@ from API.models import Tag, User
 
 
 class TagLCSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all())
+    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all(), write_only=True)
 
     class Meta:
         model = Tag
         fields = ['id', 'name', 'author']
-        extra_kwargs = {
-            'author': {'write_only': True},
-        }
 
 
 class TagRUDSerializer(serializers.ModelSerializer):
