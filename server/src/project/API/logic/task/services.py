@@ -1,4 +1,4 @@
-from API.models import Task, List
+from API.models import Task
 
 
 def create_task(validated_data):

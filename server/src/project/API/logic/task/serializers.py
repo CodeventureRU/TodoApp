@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from API.models import Task, User
-from API.logic.tag.serializers import TagLCSerializer
 
 
 class TaskLCSerializer(serializers.ModelSerializer):
