@@ -4,7 +4,6 @@ from API.logic.tag.serializers import TagLCSerializer
 
 
 class TaskLCSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all())
     tags_for_read = serializers.SerializerMethodField()
 
     class Meta:

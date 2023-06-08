@@ -3,8 +3,6 @@ from API.models import Tag, User
 
 
 class TagLCSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='email', queryset=User.objects.all())
-
     class Meta:
         model = Tag
         fields = ['id', 'name', 'author']
