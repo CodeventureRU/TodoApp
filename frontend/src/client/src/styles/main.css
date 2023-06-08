@@ -2,7 +2,7 @@
 Импорт шрифта
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
 
 /*
 Стили обнуления и подключение шрифта
@@ -12,7 +12,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', Calibri, sans-serif;
     font-weight: 600;
 }
 
@@ -48,6 +48,7 @@
     --regular-font-size: 16px;
     --header-font-size: 24px;
     --small-font-size: 14px;
+    --smallest-font-size: 14px;
     --big-font-size: 48px;
 }
 
@@ -90,6 +91,18 @@ h2.page-header {
     cursor: pointer;
 }
 
+.muted {
+    font-weight: 400;
+    font-size: var(--small-font-size);
+    color: rgba(0, 0, 0, 1);
+}
+
+.small-muted {
+    font-weight: 400;
+    font-size: var(--smallest-font-size);
+    color: rgba(0, 0, 0, 1);
+}
+
 /*
 Классы контейнеров и др разметки
 */
@@ -100,10 +113,6 @@ h2.page-header {
 
 .dashboard {
     padding-top: var(--big-margin);
-}
-
-.small-container {
-
 }
 
 .centered-container {
