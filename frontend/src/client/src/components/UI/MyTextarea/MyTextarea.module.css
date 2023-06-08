@@ -1,7 +1,7 @@
 .myTextarea {
     display: block;
     width: 100%;
-    padding: 15px 30px;
+    padding: 15px 20px;
     border-radius: var(--border-radius);
     font-size: var(--regular-font-size);
     border: 1px solid rgba(var(--gray-rgb), 1);
