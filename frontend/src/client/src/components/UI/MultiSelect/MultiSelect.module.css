@@ -1,0 +1,101 @@
+.MultiSelect {
+    display: flex;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    font-size: var(--regular-font-size);
+    border: 1px solid rgba(var(--gray-rgb), 1);
+    outline: none;
+    gap: 10px;
+    position: relative;
+    z-index: 4;
+    background: white;
+}
+
+.MultiSelectContainer {
+    position: relative;
+    z-index: 2;
+}
+
+.MultiSelect input {
+    background: transparent;
+    padding: 0;
+    border: none;
+    outline: none;
+    display: block;
+    width: 100%;
+    line-height: 25px;
+}
+
+.MultiSelectOption {
+    width: auto;
+    padding: 3px 10px;
+    font-size: var(--smallest-font-size);
+    border-radius: 5px;
+    background: rgba(var(--violet-rgb), 1);
+    color: white;
+    white-space:nowrap;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.MultiSelectOption span {
+    color: white;
+}
+
+.MultiSelectOptionCancel {
+    cursor: pointer;
+}
+
+.MultiSelectLabel {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.MultiSelectGroup {
+    margin-bottom: var(--blocks-margin);
+}
+
+.MultiSelectOptions {
+    list-style: none;
+    position: absolute;
+    z-index: 3;
+    top: calc(100% - 2 * var(--border-radius));
+    width: 100%;
+    display: block;
+
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(var(--gray-rgb), 1);
+    padding-top: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: 0.2s;
+    background: white;
+}
+
+.MultiSelectOpenedOptions {
+
+    max-height: calc(200px + 2 * var(--border-radius));
+    padding-top: calc(2 * var(--border-radius));
+}
+
+.MultiSelectOptions ul {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.MultiSelectOptions li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.MultiSelectOptions li:hover {
+    background: rgba(var(--gray-rgb), 0.1);
+}
+
+.MultiSelectOptions li:not(:first-child) {
+    border-top: 1px solid rgba(var(--gray-rgb), 1);
+}
