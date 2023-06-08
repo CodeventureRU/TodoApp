@@ -51,6 +51,8 @@ class Task(OrderedModel):
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='list_tasks')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tasks')
 
+    order_with_respect_to = 'list'
+
     def get_info(self):
         tags = list(self.tags.values_list('name', flat=True))
 
