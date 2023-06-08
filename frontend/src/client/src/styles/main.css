@@ -118,7 +118,14 @@ h2.page-header {
 .centered-container {
     margin: 100px auto;
     padding: 0 var(--wrapper-padding);
-    max-width: 560px;
+    max-width: 580px;
+}
+
+.centered-container-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--inner-blocks-margin);
+    margin-top: var(--inner-blocks-margin);
 }
 
 .centered-container-header {

@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import logoutAction from "./actions/logout";
 import Dashboard from "../pages/Dashboard";
+import HomePage from "../pages/HomePage";
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,12 @@ export const router = createBrowserRouter([
         element: <App />,
         errorElement: <ErrorPage />,
         children: [
+            // Главная
+            {
+                index: true,
+                element: <HomePage />
+            },
+
             // Вход и авторизация
             {
                 path: "/login",
