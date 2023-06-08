@@ -32,9 +32,12 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
-class List(models.Model):
+class List(OrderedModel):
     name = models.CharField(max_length=64)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lists')
+
+    class Meta:
+        ordering = ['order']
 
 
 class Tag(models.Model):
@@ -66,4 +69,4 @@ class Task(OrderedModel):
                 'order': self.order}
 
     class Meta:
-        ordering = ('order',)
+        ordering = ['order']

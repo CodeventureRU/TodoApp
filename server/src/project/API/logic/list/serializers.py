@@ -8,7 +8,7 @@ class ListLCSerializer(serializers.ModelSerializer):
     list_tasks = TaskLCSerializer(many=True, read_only=True)
     class Meta:
         model = List
-        fields = ['id', 'name', 'list_tasks', 'author']
+        fields = ['id', 'name', 'order', 'list_tasks', 'author']
         extra_kwargs = {
             'tasks': {'read_only': True}
         }

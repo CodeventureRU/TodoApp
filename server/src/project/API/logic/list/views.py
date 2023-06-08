@@ -6,7 +6,7 @@ from API.models import List
 from API.permissions import IsAuthor
 from API.logic.functions import get_data
 from API.logic.list.serializers import ListLCSerializer, ListRUDSerializer
-from API.logic.list.services import create_list
+from API.logic.list.services import create_list, move_list
 
 
 class ListLCView(APIView):
@@ -32,3 +32,11 @@ class ListRUDView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListRUDSerializer
     permission_classes = [IsAuthor]
     queryset = List.objects.all()
+
+    def patch(self, request, pk, *args, **kwargs):
+        data = get_data(request)
+        if 'order' not in data:
+            return super().patch(self, *args, **kwargs)
+        list = List.objects.get(pk=pk)
+        move_list(list, data['order'])
+        return Response(status=status.HTTP_204_NO_CONTENT)
