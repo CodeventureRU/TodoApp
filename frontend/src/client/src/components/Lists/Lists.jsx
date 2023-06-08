@@ -3,7 +3,7 @@ import {ReactSortable} from "react-sortablejs";
 import List from "../List/List";
 import cl from "./Lists.module.css";
 
-const Lists = ({lists, setLists}) => {
+const Lists = ({lists, setLists, openNewTaskModal, openNewListModal}) => {
     return (
         <div className={cl.ListsContainer}>
             <ReactSortable
@@ -15,11 +15,11 @@ const Lists = ({lists, setLists}) => {
             >
                 {
                     lists.map(list =>
-                        <List key={list.id} list={list} />
+                        <List key={list.id} list={list} openNewTaskModal={openNewTaskModal} />
                     )
                 }
             </ReactSortable>
-            <div className={cl.ListAddButton}>+</div>
+            <div className={cl.ListAddButton} onClick={() => openNewListModal()}>+</div>
         </div>
     );
 };

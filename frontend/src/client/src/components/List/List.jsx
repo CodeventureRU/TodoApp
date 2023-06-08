@@ -4,7 +4,7 @@ import cl from "./List.module.css";
 import options from "../../assets/icons/options.svg";
 import {ReactSortable} from "react-sortablejs";
 
-const List = ({list}) => {
+const List = ({list, openNewTaskModal}) => {
     const [tasks, setTasks] = useState(list.tasks);
 
     return (
@@ -23,7 +23,7 @@ const List = ({list}) => {
                     )
                 }
             </ReactSortable>
-            <div className={cl.ListFooter}>
+            <div className={cl.ListFooter} onClick={() => openNewTaskModal(list.id)}>
                 +
             </div>
 
