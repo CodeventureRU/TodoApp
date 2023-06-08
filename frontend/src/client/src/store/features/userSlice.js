@@ -3,12 +3,15 @@ import {userInitialState} from "../../api/initialStates";
 
 
 export const userSlice = createSlice({
-    userInitialState,
+    initialState: userInitialState,
     name: 'user',
     reducers: {
         logout: () => userInitialState,
         setUser: (state, action) => {
-            state.user = action.payload;
+
+            state.id = action.payload.id;
+            state.email = action.payload.email;
+            state.auth = action.payload.auth;
         }
     }
 });
