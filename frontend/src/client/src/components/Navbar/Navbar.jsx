@@ -1,11 +1,13 @@
 import React from 'react';
 import cl from "./Navbar.module.css";
 import {Form as RouterForm, NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
+// import {useSelector} from "react-redux";
 import MyBtn from "../UI/MyBtn/MyBtn";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../store/features/auth/authSlice";
 
 const Navbar = () => {
-    const user = useSelector(state => state.user);
+    const user = useSelector(selectUser);
 
     return (
         <div className={cl.Navbar}>
@@ -13,7 +15,7 @@ const Navbar = () => {
                 <div className={cl.NavbarWrapper}>
                     <NavLink to={"/"}><h2 className={"colored"}>TodoApp</h2></NavLink>
                     {
-                        !user.auth
+                        !user
                         ?
                             <ul className={cl.NavbarMenu}>
                                 <li><NavLink to={"/register"} className={"colored"}>Зарегистрироваться</NavLink></li>
