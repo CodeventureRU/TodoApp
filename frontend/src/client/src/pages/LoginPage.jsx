@@ -4,12 +4,12 @@ import MyInp from "../components/UI/MyInp/MyInp";
 import MyBtn from "../components/UI/MyBtn/MyBtn";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {setUser} from "../store/features/userSlice";
+// import {setUser} from "../store/features/userSlice";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const navigate = useNavigate();
 
     return (
@@ -19,11 +19,11 @@ const LoginPage = () => {
                 <h2>Вход в аккаунт</h2>
             </div>
             <MyForm
-                onSubmit={() => {dispatch(setUser({
-                    id: 1,
-                    auth: true,
-                    email: email
-                })); navigate("/dashboard")}}
+                // onSubmit={() => {dispatch(setUser({
+                //     id: 1,
+                //     auth: true,
+                //     email: email
+                // })); navigate("/dashboard")}}
             >
                 <MyInp
                     name={"email"}
