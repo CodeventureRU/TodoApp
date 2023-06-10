@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinLengthValidator
+from ordered_model.models import OrderedModel
 
 
 class CustomUserManager(BaseUserManager):
@@ -31,9 +32,12 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
-class List(models.Model):
+class List(OrderedModel):
     name = models.CharField(max_length=64)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lists')
+
+    class Meta:
+        ordering = ['order']
 
 
 class Tag(models.Model):
@@ -41,10 +45,28 @@ class Tag(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tags')
 
 
-class Task(models.Model):
+class Task(OrderedModel):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     deadline = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
-    tags = models.ManyToManyField(Tag)
-    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='tasks')
+    tags = models.ManyToManyField(Tag, blank=True)
+    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='list_tasks')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tasks')
+
+    order_with_respect_to = 'list'
+
+    def get_info(self):
+        tags = list(self.tags.values_list('name', flat=True))
+
+        return {'name': self.name,
+                'description': self.description,
+                'deadline': self.deadline,
+                'completed': self.completed,
+                'list': {'id': self.list_id,
+                         'name': self.list.name},
+                'tags': tags,
+                'order': self.order}
+
+    class Meta:
+        ordering = ['order']

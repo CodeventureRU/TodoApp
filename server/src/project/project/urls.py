@@ -19,5 +19,8 @@ from django.urls import path, include
 ROOT_API_URL = 'api/v1/'
 
 urlpatterns = [
-    path(ROOT_API_URL, include('API.logic.user.urls'))
+    path(ROOT_API_URL, include('API.logic.user.urls')),
+    path(ROOT_API_URL, include('API.logic.list.urls')),
+    path(ROOT_API_URL, include('API.logic.tag.urls')),
+    path(ROOT_API_URL, include('API.logic.task.urls')),
 ]
