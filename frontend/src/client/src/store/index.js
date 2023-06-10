@@ -1,10 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
-// import userReducer from "./features/userSlice";
+import {apiSlice} from "../api/apiSlice";
+import authReducer from "./features/auth/authSlice";
+import env from "react-dotenv";
 
 export const store = configureStore({
    reducer: {
-      // user: userReducer,
+      auth: authReducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
    },
-   devTools: process.env.NODE_ENV === 'development',
-   middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat([]),
+   devTools: env.REACT_APP_DEV,
+   middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat(apiSlice.middleware),
 });
