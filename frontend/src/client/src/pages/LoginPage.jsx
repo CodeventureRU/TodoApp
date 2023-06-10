@@ -4,13 +4,35 @@ import MyInp from "../components/UI/MyInp/MyInp";
 import MyBtn from "../components/UI/MyBtn/MyBtn";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-// import {setUser} from "../store/features/userSlice";
+import {useLoginMutation} from "../api/features/auth/authApiSlice";
+import {setToken} from "../store/features/auth/authSlice";
+import {stringifyErrors} from "../utlis/stringifyErrors";
+import ErrorList from "../components/ErrorList/ErrorList";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const dispatch = useDispatch();
+    const [login] = useLoginMutation();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [errors, setErrors] = useState([]);
+
+    // Обработка отправки формы авторизации
+    const handleSubmit = async (_) => {
+
+        try {
+            const token = await login({email, password}).unwrap();
+
+            dispatch(setToken(token));
+
+            setEmail("");
+            setPassword("");
+            navigate('/dashboard');
+        } catch (err) {
+            setErrors(stringifyErrors(err.data));
+        }
+    }
 
     return (
         <div className="centered-container text-center">
@@ -19,11 +41,7 @@ const LoginPage = () => {
                 <h2>Вход в аккаунт</h2>
             </div>
             <MyForm
-                // onSubmit={() => {dispatch(setUser({
-                //     id: 1,
-                //     auth: true,
-                //     email: email
-                // })); navigate("/dashboard")}}
+                onSubmit={handleSubmit}
             >
                 <MyInp
                     name={"email"}
@@ -41,6 +59,7 @@ const LoginPage = () => {
                     group={true}
                     setValue={setPassword}
                 />
+                <ErrorList errors={errors} setErrors={setErrors}/>
                 <MyBtn
                     onClick={_=>{}}
                 >Войти</MyBtn>
