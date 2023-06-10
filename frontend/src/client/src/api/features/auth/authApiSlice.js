@@ -13,7 +13,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     await dispatch(setToken(data));
-                    await dispatch(authApiSlice.endpoints.getMe.initiate(null));
+                    await dispatch(authApiSlice.endpoints.getMe.initiate(null, { forceRefetch: true }));
+                } catch (error) {}
+            }
+        }),
+        register: builder.mutation({
+            query: credentials => ({
+                url: '/user/registration/',
+                method: 'POST',
+                body: {...credentials},
+            }),
+            async onQueryStarted(args, {dispatch, queryFulfilled, }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    await dispatch(setToken(data));
+                    await dispatch(authApiSlice.endpoints.getMe.initiate(null, { forceRefetch: true }));
                 } catch (error) {}
             }
         }),
@@ -32,4 +46,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
    })
 });
 
-export const {useLoginMutation, useGetMeQuery} = authApiSlice;
+export const {useLoginMutation, useGetMeQuery, useRegisterMutation} = authApiSlice;
