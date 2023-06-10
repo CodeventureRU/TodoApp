@@ -31,6 +31,9 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
+    def get_info(self):
+        return {'email': self.email}
+
 
 class List(OrderedModel):
     name = models.CharField(max_length=64)
