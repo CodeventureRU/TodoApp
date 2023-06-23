@@ -36,7 +36,7 @@ class TaskRUDView(generics.RetrieveUpdateDestroyAPIView):
     def patch(self, request, pk, *args, **kwargs):
         data = get_data(request)
         if 'list_id' not in data:
-            return super().patch(self, *args, **kwargs)
+            return super().patch(request, *args, **kwargs)
         task = Task.objects.get(pk=pk)
         move_task(task, data['list_id'], task.list_id, data['order'])
         return Response(status=status.HTTP_204_NO_CONTENT)
