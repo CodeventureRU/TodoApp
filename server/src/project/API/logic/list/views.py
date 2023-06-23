@@ -36,7 +36,7 @@ class ListRUDView(generics.RetrieveUpdateDestroyAPIView):
     def patch(self, request, pk, *args, **kwargs):
         data = get_data(request)
         if 'order' not in data:
-            return super().patch(self, *args, **kwargs)
+            return super().patch(request, *args, **kwargs)
         list = List.objects.get(pk=pk)
         move_list(list, data['order'])
         return Response(status=status.HTTP_204_NO_CONTENT)
