@@ -3,7 +3,15 @@ import {ReactSortable} from "react-sortablejs";
 import List from "../List/List";
 import cl from "./Lists.module.css";
 
-const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditingListModal}) => {
+const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditingListModal, moveList}) => {
+
+    const handleMove = e => {
+        let draggedList = lists[e.oldIndex];
+        let newListPosition = e.newIndex;
+
+        moveList(draggedList.id, newListPosition);
+    }
+
     return (
         <div className={cl.ListsContainer}>
             <ReactSortable
@@ -11,6 +19,7 @@ const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditing
                 list={lists}
                 setList={setLists}
                 className={cl.Lists}
+                onEnd={e => handleMove(e)}
                 animation={200}
             >
                 {

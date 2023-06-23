@@ -31,7 +31,7 @@ const Dashboard = () => {
     const [lists, setLists] = useState([]);
     useEffect(() => {
         if (listData) {
-            const updatedLists = listData.map(item => ({ ...item, chosen: false }));
+            const updatedLists = listData.map(item => ({ ...item, chosen: false })).sort((a, b) => a.order > b.order ? 1 : -1);
             setLists(updatedLists);
         }
     }, [listData]);
@@ -87,6 +87,13 @@ const Dashboard = () => {
         setEditingListModalActive(false);
     }
 
+    const moveList = (id, order) => {
+        updateListMutation({
+            id,
+            order
+        });
+    }
+
     const openNewTaskModal = (list_id) => {
         setLists([...lists]);
         setNewTaskModalActive(true);
@@ -113,6 +120,7 @@ const Dashboard = () => {
                     openNewTaskModal={openNewTaskModal}
                     openNewListModal={openNewListModal}
                     openEditingListModal={openEditingListModal}
+                    moveList={moveList}
                 ></Lists>
             </div>
             <CreatingTaskModal
