@@ -4,10 +4,10 @@ import completed from "../../assets/icons/completed.svg";
 import clocks from "../../assets/icons/clocks.svg";
 import tags from "../../assets/icons/tags.svg";
 
-const Task = ({task}) => {
+const Task = ({task, complete}) => {
     return (
         <div className={cl.Task + " " + (task.completed && cl.CompletedTask)}>
-            <div className={cl.TaskIndicator}>
+            <div className={cl.TaskIndicator} onClick={() => complete(task.id, !task.completed)}>
                 {
                     task.completed &&
                     <img src={completed} alt="Completed"/>

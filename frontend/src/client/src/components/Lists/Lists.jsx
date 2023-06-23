@@ -3,7 +3,7 @@ import {ReactSortable} from "react-sortablejs";
 import List from "../List/List";
 import cl from "./Lists.module.css";
 
-const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditingListModal, moveList, moveTask}) => {
+const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditingListModal, moveList, moveTask, completeTask}) => {
 
     const [draggingTask, setDraggingTask] = useState(null);
     const handleMove = e => {
@@ -25,7 +25,7 @@ const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditing
             >
                 {
                     lists.map(list =>
-                        <List draggingTask={draggingTask} setDraggingTask={setDraggingTask} key={list.id} list={list} openNewTaskModal={openNewTaskModal} openEditingListModal={openEditingListModal} moveTask={moveTask} />
+                        <List completeTask={completeTask} draggingTask={draggingTask} setDraggingTask={setDraggingTask} key={list.id} list={list} openNewTaskModal={openNewTaskModal} openEditingListModal={openEditingListModal} moveTask={moveTask} />
                     )
                 }
             </ReactSortable>

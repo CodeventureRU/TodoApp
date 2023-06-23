@@ -4,7 +4,7 @@ import CreatingTaskModal from "../components/CreatingTaskModal/CreatingTaskModal
 import CreatingListModal from "../components/CreatingListModal/CreatingListModal";
 import {
     useCreateListMutation, useCreateTaskMutation,
-    useGetListsQuery,
+    useGetListsQuery, useMoveTaskMutation,
     useRemoveListMutation,
     useUpdateListMutation, useUpdateTaskMutation
 } from "../api/features/tasks/tasksApiSlice";
@@ -45,6 +45,7 @@ const Dashboard = () => {
     const [updateListMutation] = useUpdateListMutation();
     const [createTaskMutation] = useCreateTaskMutation();
     const [updateTaskMutation] = useUpdateTaskMutation();
+    const [moveTaskMutation] = useMoveTaskMutation();
 
     // Управление модалкой изменения/удаления списка задач
     const [editingListModalActive, setEditingListModalActive] = useState(false);
@@ -64,8 +65,6 @@ const Dashboard = () => {
     const [selectedTags, setSelectedTags] = useState([]);
 
     const createNewTask = () => {
-
-        // TODO: Сделать добавление задачи
         let taskData = newTask;
         if (!taskData.description) {
             delete taskData.description;
@@ -111,11 +110,18 @@ const Dashboard = () => {
     }
 
     const moveTask = (id, order, list_id) => {
-        updateTaskMutation({
+        moveTaskMutation({
             id,
             order,
             list_id
         });
+    }
+
+    const completeTask = (id, completed) => {
+        updateTaskMutation({
+            id,
+            completed
+        })
     }
 
     const openNewTaskModal = (list) => {
@@ -146,6 +152,7 @@ const Dashboard = () => {
                     openEditingListModal={openEditingListModal}
                     moveList={moveList}
                     moveTask={moveTask}
+                    completeTask={completeTask}
                 ></Lists>
             </div>
             <CreatingTaskModal

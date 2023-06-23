@@ -29,6 +29,14 @@ export const tasksApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Lists']
         }),
 
+        moveTask: builder.mutation({
+            query: ({ id, ...data }) => ({
+                url: `/tasks/${id}/`,
+                method: 'PATCH',
+                body: {...data},
+            }),
+        }),
+
         getLists: builder.query({
             query: _ => ({
                 url: '/lists/',
@@ -74,4 +82,5 @@ export const {
     useUpdateListMutation,
     useCreateTaskMutation,
     useUpdateTaskMutation,
+    useMoveTaskMutation,
 } = tasksApiSlice;
