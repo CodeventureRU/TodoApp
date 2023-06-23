@@ -1,11 +1,29 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Task from "../Task/Task";
 import cl from "./List.module.css";
 import options from "../../assets/icons/options.svg";
 import {ReactSortable} from "react-sortablejs";
 
-const List = ({list, openNewTaskModal, openEditingListModal}) => {
-    const [tasks, setTasks] = useState(list.list_tasks);
+const List = ({list, openNewTaskModal, openEditingListModal, moveTask, draggingTask, setDraggingTask}) => {
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        setTasks(list.list_tasks.sort((a, b) => a.order > b.order ? 1 : -1));
+    }, [list.list_tasks]);
+
+    const handleMove = e => {
+        if (e.to === e.from) {
+            let draggedTask = tasks[e.oldIndex];
+            let newTaskPosition = e.newIndex;
+            moveTask(draggedTask.id, newTaskPosition, list.id);
+        }
+    }
+
+    const handleAdd = e => {
+        let draggedTask = draggingTask;
+        let newTaskPosition = e.newIndex;
+        moveTask(draggedTask.id, newTaskPosition, list.id);
+    }
 
     return (
         <div className={cl.List}>
@@ -16,7 +34,16 @@ const List = ({list, openNewTaskModal, openEditingListModal}) => {
             {/*
             Все задачи можно перемещать в любом списке, поэтому они должны иметь общую группу.
             */}
-            <ReactSortable group="tasks" animation={200} list={tasks} setList={setTasks} className={cl.ListTasks}>
+            <ReactSortable
+                group="tasks"
+                animation={200}
+                list={tasks}
+                setList={setTasks}
+                className={cl.ListTasks}
+                onEnd={e => handleMove(e)}
+                onAdd={e => handleAdd(e)}
+                onStart={e => setDraggingTask(tasks[e.oldIndex])}
+            >
                 {
                     tasks.map(task =>
                         <Task key={task.id} task={task}/>

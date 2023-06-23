@@ -3,10 +3,10 @@ import Lists from "../components/Lists/Lists";
 import CreatingTaskModal from "../components/CreatingTaskModal/CreatingTaskModal";
 import CreatingListModal from "../components/CreatingListModal/CreatingListModal";
 import {
-    useCreateListMutation,
+    useCreateListMutation, useCreateTaskMutation,
     useGetListsQuery,
     useRemoveListMutation,
-    useUpdateListMutation
+    useUpdateListMutation, useUpdateTaskMutation
 } from "../api/features/tasks/tasksApiSlice";
 import EditingListModal from "../components/EditingListModel/EditingListModal";
 
@@ -31,13 +31,20 @@ const Dashboard = () => {
     const [lists, setLists] = useState([]);
     useEffect(() => {
         if (listData) {
-            const updatedLists = listData.map(item => ({ ...item, chosen: false })).sort((a, b) => a.order > b.order ? 1 : -1);
+            const updatedLists = listData
+                .map(item => ({
+                    ...item,
+                    chosen: false,
+                    list_tasks: [...item.list_tasks.map(task => ({...task, chosen: false}))] }))
+                .sort((a, b) => a.order > b.order ? 1 : -1);
             setLists(updatedLists);
         }
     }, [listData]);
     const [createListMutation] = useCreateListMutation();
     const [removeListMutation] = useRemoveListMutation();
     const [updateListMutation] = useUpdateListMutation();
+    const [createTaskMutation] = useCreateTaskMutation();
+    const [updateTaskMutation] = useUpdateTaskMutation();
 
     // Управление модалкой изменения/удаления списка задач
     const [editingListModalActive, setEditingListModalActive] = useState(false);
@@ -48,16 +55,25 @@ const Dashboard = () => {
     // Управление формой создания задачи
     const [newTaskModalActive, setNewTaskModalActive] = useState(false);
     const [newTask, setNewTask] = useState({
-       list_id: 1,
+       list: 1,
        name: "",
        description: "",
        deadline: "",
-       tags1: false,
+       tags: [],
     });
     const [selectedTags, setSelectedTags] = useState([]);
 
     const createNewTask = () => {
+
         // TODO: Сделать добавление задачи
+        let taskData = newTask;
+        if (!taskData.description) {
+            delete taskData.description;
+        }
+        if (!taskData.deadline) {
+            delete taskData.deadline;
+        }
+        createTaskMutation(newTask);
     }
 
     // Управление формой создания списка задач
@@ -94,10 +110,18 @@ const Dashboard = () => {
         });
     }
 
-    const openNewTaskModal = (list_id) => {
+    const moveTask = (id, order, list_id) => {
+        updateTaskMutation({
+            id,
+            order,
+            list_id
+        });
+    }
+
+    const openNewTaskModal = (list) => {
         setLists([...lists]);
         setNewTaskModalActive(true);
-        setNewTask({...newTask, list_id});
+        setNewTask({...newTask, list});
     }
 
     const openNewListModal = () => {
@@ -121,6 +145,7 @@ const Dashboard = () => {
                     openNewListModal={openNewListModal}
                     openEditingListModal={openEditingListModal}
                     moveList={moveList}
+                    moveTask={moveTask}
                 ></Lists>
             </div>
             <CreatingTaskModal
