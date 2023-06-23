@@ -4,13 +4,13 @@ import cl from "./List.module.css";
 import options from "../../assets/icons/options.svg";
 import {ReactSortable} from "react-sortablejs";
 
-const List = ({list, openNewTaskModal}) => {
-    const [tasks, setTasks] = useState(list.tasks);
+const List = ({list, openNewTaskModal, openEditingListModal}) => {
+    const [tasks, setTasks] = useState(list.list_tasks);
 
     return (
         <div className={cl.List}>
             <div className={cl.ListHeader}>
-                <img src={options} alt="Options" className={"pointer"}/>
+                <img src={options} onClick={() => openEditingListModal(list)} alt="Options" className={"pointer"}/>
                 {list.name}
             </div>
             {/*

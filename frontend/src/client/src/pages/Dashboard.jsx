@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Lists from "../components/Lists/Lists";
 import CreatingTaskModal from "../components/CreatingTaskModal/CreatingTaskModal";
 import CreatingListModal from "../components/CreatingListModal/CreatingListModal";
+import {useCreateListMutation, useGetListsQuery, useRemoveListMutation} from "../api/features/tasks/tasksApiSlice";
+import EditingListModal from "../components/EditingListModel/EditingListModal";
 
 const Dashboard = () => {
 
@@ -20,52 +22,22 @@ const Dashboard = () => {
             name: "Kitchen"
         },
     ]);
-    const [lists, setLists] = useState([
-        {
-            id: 1,
-            name: "Tasks list 1",
-            tasks: [
-                {
-                    id: 1,
-                    name: "Todo 1",
-                    description: "Сделать жареный суп",
-                    deadline: "26.06.2023 13:00",
-                    tags: ["Kitchen"],
-                    completed: false,
-                },
-                {
-                    id: 2,
-                    name: "Todo 2",
-                    tags: ["Kitchen"],
-                    completed: false,
-                },
-            ]
-        },
-        {
-            id: 2,
-            name: "Tasks list 2",
-            tasks: [
-                {
-                    id: 3,
-                    name: "Todo 3",
-                    deadline: "26.06.2023 13:00",
-                    completed: true,
-                },
-            ]
-        },
-        {
-            id: 3,
-            name: "Tasks list 3",
-            tasks: [
-                {
-                    id: 4,
-                    name: "Todo 4",
-                    tags: [],
-                    completed: false,
-                },
-            ]
-        },
-    ]);
+    const { data: listData} = useGetListsQuery();
+    const [lists, setLists] = useState([]);
+    useEffect(() => {
+        if (listData) {
+            const updatedLists = listData.map(item => ({ ...item, chosen: false }));
+            setLists(updatedLists);
+        }
+    }, [listData]);
+    const [createListMutation] = useCreateListMutation();
+    const [removeListMutation] = useRemoveListMutation();
+
+    // Управление модалкой изменения/удаления списка задач
+    const [editingListModalActive, setEditingListModalActive] = useState(false);
+    const [editingList, setEditingList] = useState({
+        name: "",
+    });
 
     // Управление формой создания задачи
     const [newTaskModalActive, setNewTaskModalActive] = useState(false);
@@ -90,9 +62,18 @@ const Dashboard = () => {
 
     const createNewList = () => {
         // TODO: Сделать добавление списка задач
+
+        createListMutation(newList);
+        setNewListModalActive(false);
+    }
+
+    const removeList = (id) => {
+        removeListMutation(id);
+        setEditingListModalActive(false);
     }
 
     const openNewTaskModal = (list_id) => {
+        setLists([...lists]);
         setNewTaskModalActive(true);
         setNewTask({...newTask, list_id});
     }
@@ -101,12 +82,23 @@ const Dashboard = () => {
         setNewListModalActive(true);
     }
 
+    const openEditingListModal = (list) => {
+        setEditingList(list);
+        setEditingListModalActive(true);
+    }
+
 
     return (
         <div className="dashboard">
             <div className="container">
                 <h2 className="page-header">Списки задач</h2>
-                <Lists lists={lists} setLists={setLists} openNewTaskModal={openNewTaskModal} openNewListModal={openNewListModal}></Lists>
+                <Lists
+                    lists={lists}
+                    setLists={setLists}
+                    openNewTaskModal={openNewTaskModal}
+                    openNewListModal={openNewListModal}
+                    openEditingListModal={openEditingListModal}
+                ></Lists>
             </div>
             <CreatingTaskModal
                 newTaskModalActive={newTaskModalActive}
@@ -125,6 +117,13 @@ const Dashboard = () => {
                 newListModalActive={newListModalActive}
                 setNewListModalActive={setNewListModalActive}
                 create={createNewList}
+            />
+
+            <EditingListModal
+                editingListModalActive={editingListModalActive}
+                setEditingListModalActive={setEditingListModalActive}
+                editingList={editingList}
+                removeList={removeList}
             />
         </div>
     );
