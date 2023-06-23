@@ -3,9 +3,6 @@ import {apiSlice} from "../../apiSlice";
 
 export const tasksApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-
-
-
         getTasks: builder.query({
             query: _ => ({
                 url: '/tasks/',
@@ -34,13 +31,21 @@ export const tasksApiSlice = apiSlice.injectEndpoints({
 
         removeList: builder.mutation({
             query: (id) => ({
-                url: `/lists/${id}`,
+                url: `/lists/${id}/`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Lists"]
         }),
 
+        updateList: builder.mutation({
+            query: ({ id, ...data }) => ({
+                url: `/lists/${id}/`,
+                method: 'PATCH',
+                body: {...data},
+            }),
+            invalidatesTags: ['Lists']
+        }),
     })
 });
 
-export const {useGetTasksQuery, useGetListsQuery, useCreateListMutation, useRemoveListMutation} = tasksApiSlice;
+export const {useGetTasksQuery, useGetListsQuery, useCreateListMutation, useRemoveListMutation, useUpdateListMutation} = tasksApiSlice;

@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import Lists from "../components/Lists/Lists";
 import CreatingTaskModal from "../components/CreatingTaskModal/CreatingTaskModal";
 import CreatingListModal from "../components/CreatingListModal/CreatingListModal";
-import {useCreateListMutation, useGetListsQuery, useRemoveListMutation} from "../api/features/tasks/tasksApiSlice";
+import {
+    useCreateListMutation,
+    useGetListsQuery,
+    useRemoveListMutation,
+    useUpdateListMutation
+} from "../api/features/tasks/tasksApiSlice";
 import EditingListModal from "../components/EditingListModel/EditingListModal";
 
 const Dashboard = () => {
@@ -32,6 +37,7 @@ const Dashboard = () => {
     }, [listData]);
     const [createListMutation] = useCreateListMutation();
     const [removeListMutation] = useRemoveListMutation();
+    const [updateListMutation] = useUpdateListMutation();
 
     // Управление модалкой изменения/удаления списка задач
     const [editingListModalActive, setEditingListModalActive] = useState(false);
@@ -61,14 +67,23 @@ const Dashboard = () => {
     });
 
     const createNewList = () => {
-        // TODO: Сделать добавление списка задач
-
         createListMutation(newList);
         setNewListModalActive(false);
+        setNewList({
+            name: "",
+        });
     }
 
     const removeList = (id) => {
         removeListMutation(id);
+        setEditingListModalActive(false);
+    }
+
+    const updateList = () => {
+        updateListMutation({
+            id: editingList.id,
+            name: editingList.name
+        });
         setEditingListModalActive(false);
     }
 
@@ -123,7 +138,9 @@ const Dashboard = () => {
                 editingListModalActive={editingListModalActive}
                 setEditingListModalActive={setEditingListModalActive}
                 editingList={editingList}
+                setEditingList={setEditingList}
                 removeList={removeList}
+                update={updateList}
             />
         </div>
     );
