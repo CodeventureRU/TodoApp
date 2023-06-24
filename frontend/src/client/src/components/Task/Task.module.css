@@ -38,6 +38,10 @@
     gap: 14px;
 }
 
+.TaskName {
+    cursor: pointer;
+}
+
 .CompletedTask .TaskName {
     color: rgba(var(--green-rgb), 1);
 }

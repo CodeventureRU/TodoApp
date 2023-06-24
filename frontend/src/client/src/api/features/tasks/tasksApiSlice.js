@@ -37,6 +37,14 @@ export const tasksApiSlice = apiSlice.injectEndpoints({
             }),
         }),
 
+        removeTask: builder.mutation({
+            query: (id) => ({
+                url: `/tasks/${id}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Lists"]
+        }),
+
         getLists: builder.query({
             query: _ => ({
                 url: '/lists/',
@@ -71,6 +79,7 @@ export const tasksApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Lists']
         }),
+
     })
 });
 
@@ -83,4 +92,5 @@ export const {
     useCreateTaskMutation,
     useUpdateTaskMutation,
     useMoveTaskMutation,
+    useRemoveTaskMutation,
 } = tasksApiSlice;

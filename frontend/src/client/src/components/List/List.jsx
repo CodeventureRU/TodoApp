@@ -4,7 +4,7 @@ import cl from "./List.module.css";
 import options from "../../assets/icons/options.svg";
 import {ReactSortable} from "react-sortablejs";
 
-const List = ({list, openNewTaskModal, openEditingListModal, moveTask, draggingTask, setDraggingTask, completeTask}) => {
+const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModal, moveTask, draggingTask, setDraggingTask, completeTask}) => {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const List = ({list, openNewTaskModal, openEditingListModal, moveTask, draggingT
             >
                 {
                     tasks.map(task =>
-                        <Task key={task.id} task={task} complete={completeTask}/>
+                        <Task key={task.id} task={task} complete={completeTask} openEditingTaskModal={openEditingTaskModal}/>
                     )
                 }
             </ReactSortable>

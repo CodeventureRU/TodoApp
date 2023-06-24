@@ -4,7 +4,7 @@ import completed from "../../assets/icons/completed.svg";
 import clocks from "../../assets/icons/clocks.svg";
 import tags from "../../assets/icons/tags.svg";
 
-const Task = ({task, complete}) => {
+const Task = ({task, complete, openEditingTaskModal}) => {
     return (
         <div className={cl.Task + " " + (task.completed && cl.CompletedTask)}>
             <div className={cl.TaskIndicator} onClick={() => complete(task.id, !task.completed)}>
@@ -15,7 +15,7 @@ const Task = ({task, complete}) => {
             </div>
             <div className={cl.TaskContent}>
                 <div>
-                    <p className={cl.TaskName}>{task.name}</p>
+                    <p className={cl.TaskName} onClick={() => openEditingTaskModal(task)}>{task.name}</p>
                     <p className="muted">{task.description}</p>
                 </div>
                 {/*

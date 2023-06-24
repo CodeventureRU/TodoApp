@@ -5,10 +5,11 @@ import CreatingListModal from "../components/CreatingListModal/CreatingListModal
 import {
     useCreateListMutation, useCreateTaskMutation,
     useGetListsQuery, useMoveTaskMutation,
-    useRemoveListMutation,
+    useRemoveListMutation, useRemoveTaskMutation,
     useUpdateListMutation, useUpdateTaskMutation
 } from "../api/features/tasks/tasksApiSlice";
 import EditingListModal from "../components/EditingListModel/EditingListModal";
+import EditingTaskModal from "../components/EditingTaskModal/EditingTaskModal";
 
 const Dashboard = () => {
 
@@ -46,6 +47,7 @@ const Dashboard = () => {
     const [createTaskMutation] = useCreateTaskMutation();
     const [updateTaskMutation] = useUpdateTaskMutation();
     const [moveTaskMutation] = useMoveTaskMutation();
+    const [removeTaskMutation] = useRemoveTaskMutation();
 
     // Управление модалкой изменения/удаления списка задач
     const [editingListModalActive, setEditingListModalActive] = useState(false);
@@ -63,6 +65,16 @@ const Dashboard = () => {
        tags: [],
     });
     const [selectedTags, setSelectedTags] = useState([]);
+
+    // Управление модалкой изменения/удаления задачи
+    const [editingTaskModalActive, setEditingTaskModalActive] = useState(false);
+    const [editingTask, setEditingTask] = useState({
+        list: 1,
+        name: "",
+        description: "",
+        deadline: "",
+        tags: [],
+    })
 
     const createNewTask = () => {
         let taskData = newTask;
@@ -94,12 +106,37 @@ const Dashboard = () => {
         setEditingListModalActive(false);
     }
 
+    const removeTask = (id) => {
+        removeTaskMutation(id);
+        setEditingTaskModalActive(false);
+    }
+
     const updateList = () => {
         updateListMutation({
             id: editingList.id,
             name: editingList.name
         });
         setEditingListModalActive(false);
+    }
+
+    const updateTask = () => {
+        let taskData = {
+            id: editingTask.id,
+            name: editingTask.name,
+            deadline: editingTask.deadline,
+            description: editingTask.description
+        };
+
+        if (!editingTask.deadline) {
+            delete taskData.deadline;
+        }
+
+        if (!editingTask.description) {
+            delete taskData.description;
+        }
+
+        updateTaskMutation(taskData);
+        setEditingTaskModalActive(false);
     }
 
     const moveList = (id, order) => {
@@ -139,6 +176,11 @@ const Dashboard = () => {
         setEditingListModalActive(true);
     }
 
+    const openEditingTaskModal = (task) => {
+        setEditingTask(task);
+        setEditingTaskModalActive(true);
+    }
+
 
     return (
         <div className="dashboard">
@@ -150,9 +192,11 @@ const Dashboard = () => {
                     openNewTaskModal={openNewTaskModal}
                     openNewListModal={openNewListModal}
                     openEditingListModal={openEditingListModal}
+                    openEditingTaskModal={openEditingTaskModal}
                     moveList={moveList}
                     moveTask={moveTask}
                     completeTask={completeTask}
+
                 ></Lists>
             </div>
             <CreatingTaskModal
@@ -181,6 +225,15 @@ const Dashboard = () => {
                 setEditingList={setEditingList}
                 removeList={removeList}
                 update={updateList}
+            />
+
+            <EditingTaskModal
+                editingTaskModalActive={editingTaskModalActive}
+                setEditingTaskModalActive={setEditingTaskModalActive}
+                editingTask={editingTask}
+                setEditingTask={setEditingTask}
+                update={updateTask}
+                removeTask={removeTask}
             />
         </div>
     );
