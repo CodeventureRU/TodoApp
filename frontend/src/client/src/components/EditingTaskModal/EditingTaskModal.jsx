@@ -4,8 +4,9 @@ import MyTextarea from "../UI/MyTextarea/MyTextarea";
 import MyBtn from "../UI/MyBtn/MyBtn";
 import Modal from "../Modal/Modal";
 import MyForm from "../UI/MyForm/MyForm";
+import MultiSelect from "../UI/MultiSelect/MultiSelect";
 
-const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, removeTask, update}) => {
+const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update}) => {
 
     const deadline = new Date(editingTask.deadline);
 
@@ -26,7 +27,12 @@ const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, ed
                     name={"deadline"}
                     label={"Срок выполнения"}
                     group={true}
-                    value={deadline.getFullYear()+"-"+(("0" + (deadline.getMonth() + 1)).slice(-2))+"-"+(("0" + deadline.getDate()).slice(-2))}
+                    value={editingTask.deadline
+                        ?
+                        deadline.getFullYear()+"-"+(("0" + (deadline.getMonth() + 1)).slice(-2))+"-"+(("0" + deadline.getDate()).slice(-2))
+                        :
+                        ""
+                    }
                     setValue={value => setEditingTask({...editingTask, deadline: value})}
                 />
                 <MyTextarea
@@ -37,14 +43,14 @@ const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, ed
                     value={editingTask.description}
                     setValue={value => setEditingTask({...editingTask, description: value})}
                 />
-                {/*<MultiSelect*/}
-                {/*    name={"tags"}*/}
-                {/*    label={"Теги"}*/}
-                {/*    group={true}*/}
-                {/*    selected={selectedTags}*/}
-                {/*    setSelected={setSelectedTags}*/}
-                {/*    options={tags.map(tag => ({value: tag.id, name: tag.name}))}*/}
-                {/*/>*/}
+                <MultiSelect
+                    name={"tags"}
+                    label={"Теги"}
+                    group={true}
+                    selected={selectedTags}
+                    setSelected={setSelectedTags}
+                    options={tags.map(tag => ({value: tag.id, name: tag.name}))}
+                />
                 <MyBtn>Сохранить изменения</MyBtn>
             </MyForm>
             <br/><br/>

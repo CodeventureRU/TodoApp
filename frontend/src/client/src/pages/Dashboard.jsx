@@ -10,24 +10,20 @@ import {
 } from "../api/features/tasks/tasksApiSlice";
 import EditingListModal from "../components/EditingListModel/EditingListModal";
 import EditingTaskModal from "../components/EditingTaskModal/EditingTaskModal";
+import {useGetTagsQuery} from "../api/features/tags/tagsApislice";
 
 const Dashboard = () => {
 
     // Массивы тегов и задач
-    const [tags] = useState([
-        {
-            id: 1,
-            name: "Frontend"
-        },
-        {
-            id: 2,
-            name: "Backend"
-        },
-        {
-            id: 3,
-            name: "Kitchen"
-        },
-    ]);
+    const { data: tagsData } = useGetTagsQuery();
+    const [tags, setTags] = useState([]);
+    useEffect(() => {
+        if (tagsData) {
+            console.log(tagsData);
+            setTags(tagsData);
+        }
+    }, [tagsData]);
+
     const { data: listData} = useGetListsQuery();
     const [lists, setLists] = useState([]);
     useEffect(() => {
@@ -60,8 +56,6 @@ const Dashboard = () => {
     const [newTask, setNewTask] = useState({
        list: 1,
        name: "",
-       description: "",
-       deadline: "",
        tags: [],
     });
     const [selectedTags, setSelectedTags] = useState([]);
@@ -71,13 +65,13 @@ const Dashboard = () => {
     const [editingTask, setEditingTask] = useState({
         list: 1,
         name: "",
-        description: "",
-        deadline: "",
         tags: [],
     })
 
     const createNewTask = () => {
         let taskData = newTask;
+        console.log(selectedTags);
+        taskData.tags = [...selectedTags.map(tag => tag.value)];
         if (!taskData.description) {
             delete taskData.description;
         }
@@ -85,6 +79,12 @@ const Dashboard = () => {
             delete taskData.deadline;
         }
         createTaskMutation(newTask);
+        setNewTask({
+            list: 1,
+            name: "",
+            tags: [],
+        })
+        setNewTaskModalActive(false);
     }
 
     // Управление формой создания списка задач
@@ -127,6 +127,8 @@ const Dashboard = () => {
             description: editingTask.description
         };
 
+        taskData.tags = [...selectedTags.map(tag => tag.value)];
+
         if (!editingTask.deadline) {
             delete taskData.deadline;
         }
@@ -162,6 +164,7 @@ const Dashboard = () => {
     }
 
     const openNewTaskModal = (list) => {
+        setSelectedTags([]);
         setLists([...lists]);
         setNewTaskModalActive(true);
         setNewTask({...newTask, list});
@@ -177,6 +180,10 @@ const Dashboard = () => {
     }
 
     const openEditingTaskModal = (task) => {
+        setSelectedTags([...task.tags_for_read.map(tag => ({
+            value: tag.id,
+            name: tag.name
+        }))]);
         setEditingTask(task);
         setEditingTaskModalActive(true);
     }
@@ -232,6 +239,9 @@ const Dashboard = () => {
                 setEditingTaskModalActive={setEditingTaskModalActive}
                 editingTask={editingTask}
                 setEditingTask={setEditingTask}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+                tags={tags}
                 update={updateTask}
                 removeTask={removeTask}
             />

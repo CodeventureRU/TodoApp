@@ -23,7 +23,7 @@ const Task = ({task, complete, openEditingTaskModal}) => {
                 Внутри выводимого дива также выводим сроки, если есть, и теги, если есть и непустые.
                 */}
                 {
-                    (task.deadline || (task.tags && task.tags.length)) ?
+                    (task.deadline || (task.tags_for_read && task.tags_for_read.length)) ?
                     <div className="">
                         {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {
                             new Date(task.deadline).toLocaleDateString("ru-RU", {
@@ -32,7 +32,7 @@ const Task = ({task, complete, openEditingTaskModal}) => {
                                 minute: 'numeric',
                             })
                         }</p> }
-                        {(task.tags && task.tags.length) && <p className="small-muted"><img src={tags} alt="Tags"/> {task.tags.join(", ")}</p> }
+                        {(task.tags_for_read && task.tags_for_read.length) ? <p className="small-muted"><img src={tags} alt="Tags"/> {[...task.tags_for_read.map(tag => tag.name)].join(", ")}</p> : ""}
                     </div>
                         :
                         ""
