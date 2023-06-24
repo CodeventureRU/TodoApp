@@ -25,7 +25,13 @@ const Task = ({task, complete}) => {
                 {
                     (task.deadline || (task.tags && task.tags.length)) ?
                     <div className="">
-                        {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {task.deadline}</p> }
+                        {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {
+                            new Date(task.deadline).toLocaleDateString("ru-RU", {
+                                month: 'short', day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                            })
+                        }</p> }
                         {(task.tags && task.tags.length) && <p className="small-muted"><img src={tags} alt="Tags"/> {task.tags.join(", ")}</p> }
                     </div>
                         :
