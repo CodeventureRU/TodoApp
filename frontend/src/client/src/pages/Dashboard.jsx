@@ -10,7 +10,8 @@ import {
 } from "../api/features/tasks/tasksApiSlice";
 import EditingListModal from "../components/EditingListModel/EditingListModal";
 import EditingTaskModal from "../components/EditingTaskModal/EditingTaskModal";
-import {useGetTagsQuery} from "../api/features/tags/tagsApislice";
+import {useCreateTagMutation, useGetTagsQuery, useRemoveTagMutation} from "../api/features/tags/tagsApislice";
+import TagsManagementModal from "../components/TagsManagementModal/TagsManagementModal";
 
 const Dashboard = () => {
 
@@ -44,6 +45,11 @@ const Dashboard = () => {
     const [updateTaskMutation] = useUpdateTaskMutation();
     const [moveTaskMutation] = useMoveTaskMutation();
     const [removeTaskMutation] = useRemoveTaskMutation();
+    const [createTagMutation] = useCreateTagMutation();
+    const [removeTagMutation] = useRemoveTagMutation();
+
+    // Управление модалкой тегов
+    const [tagsManagementModalActive, setTagsManagementModalActive] = useState(false);
 
     // Управление модалкой изменения/удаления списка задач
     const [editingListModalActive, setEditingListModalActive] = useState(false);
@@ -92,6 +98,14 @@ const Dashboard = () => {
     const [newList, setNewList] = useState({
         name: "",
     });
+
+    const createTag = (data) => {
+        createTagMutation(data);
+    }
+
+    const removeTag = (id) => {
+        removeTagMutation(id);
+    }
 
     const createNewList = () => {
         createListMutation(newList);
@@ -241,9 +255,19 @@ const Dashboard = () => {
                 setEditingTask={setEditingTask}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                setTagsManagementModalActive={setTagsManagementModalActive}
                 tags={tags}
                 update={updateTask}
                 removeTask={removeTask}
+            />
+
+            <TagsManagementModal
+                tagsManagementModalActive={tagsManagementModalActive}
+                setTagsManagementModalActive={setTagsManagementModalActive}
+                tags={tags}
+
+                create={createTag}
+                remove={removeTag}
             />
         </div>
     );

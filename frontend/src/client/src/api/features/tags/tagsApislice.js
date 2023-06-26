@@ -7,13 +7,32 @@ export const tagsApiSlice = apiSlice.injectEndpoints({
             query: _ => ({
                 url: '/tags/',
                 method: 'GET',
-                tags: ['Tags'],
             }),
             providesTags: ['Tags']
+        }),
+
+        createTag: builder.mutation({
+            query: data => ({
+                url: '/tags/',
+                method: 'POST',
+                body: {...data},
+            }),
+            invalidatesTags: ["Tags"]
+        }),
+
+
+        removeTag: builder.mutation({
+            query: (id) => ({
+                url: `/tags/${id}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Tags"]
         }),
     })
 });
 
 export const {
-    useGetTagsQuery
+    useGetTagsQuery,
+    useCreateTagMutation,
+    useRemoveTagMutation,
 } = tagsApiSlice;

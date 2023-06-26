@@ -6,7 +6,7 @@ import Modal from "../Modal/Modal";
 import MyForm from "../UI/MyForm/MyForm";
 import MultiSelect from "../UI/MultiSelect/MultiSelect";
 
-const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update}) => {
+const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update, setTagsManagementModalActive}) => {
 
     const deadline = new Date(editingTask.deadline);
 
@@ -46,11 +46,13 @@ const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, ed
                 <MultiSelect
                     name={"tags"}
                     label={"Теги"}
-                    group={true}
                     selected={selectedTags}
                     setSelected={setSelectedTags}
                     options={tags.map(tag => ({value: tag.id, name: tag.name}))}
                 />
+                <br/>
+                <p className={"colored pointer"} onClick={_ => setTagsManagementModalActive(true)}>Управление тегами</p>
+                <br/>
                 <MyBtn>Сохранить изменения</MyBtn>
             </MyForm>
             <br/><br/>
