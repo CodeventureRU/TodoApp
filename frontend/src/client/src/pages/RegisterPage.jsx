@@ -29,7 +29,7 @@ const RegisterPage = () => {
             setPassword("");
             navigate('/dashboard');
         } catch (err) {
-            setErrors(stringifyErrors(err.data, {"password": "Пароль", "email": "Email"}));
+            setErrors(stringifyErrors(err.data, {"password": "Пароль", "email": "Email", "confirm_password": "Подтверждение пароля"}));
         }
     }
 
