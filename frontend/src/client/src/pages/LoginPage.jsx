@@ -3,9 +3,7 @@ import MyForm from "../components/UI/MyForm/MyForm";
 import MyInp from "../components/UI/MyInp/MyInp";
 import MyBtn from "../components/UI/MyBtn/MyBtn";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {useLoginMutation} from "../api/features/auth/authApiSlice";
-import {setToken} from "../store/features/auth/authSlice";
+import {useGetMeQuery, useLoginMutation} from "../api/features/auth/authApiSlice";
 import {stringifyErrors} from "../utlis/stringifyErrors";
 import ErrorList from "../components/ErrorList/ErrorList";
 
@@ -13,18 +11,18 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login] = useLoginMutation();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [errors, setErrors] = useState([]);
+
+    const {refetch: getMeRefetch} = useGetMeQuery({}, {});
 
     // Обработка отправки формы авторизации
     const handleSubmit = async (_) => {
 
         try {
-            const token = await login({email, password}).unwrap();
-
-            dispatch(setToken(token));
+            await login({email, password}).unwrap();
+            await getMeRefetch();
 
             setEmail("");
             setPassword("");

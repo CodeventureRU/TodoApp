@@ -13,7 +13,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     await dispatch(setToken(data));
-                    await dispatch(authApiSlice.endpoints.getMe.initiate(null, { forceRefetch: true }));
                 } catch (error) {}
             }
         }),
@@ -27,7 +26,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     await dispatch(setToken(data));
-                    await dispatch(authApiSlice.endpoints.getMe.initiate(null, { forceRefetch: true }));
                 } catch (error) {}
             }
         }),

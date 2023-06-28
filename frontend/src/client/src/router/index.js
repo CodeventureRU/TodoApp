@@ -8,6 +8,7 @@ import RegisterPage from "../pages/RegisterPage";
 import logoutAction from "./actions/logout";
 import Dashboard from "../pages/Dashboard";
 import HomePage from "../pages/HomePage";
+import {AuthProvider} from "../providers/AuthProvider";
 
 export const router = createBrowserRouter([
     {
@@ -40,8 +41,15 @@ export const router = createBrowserRouter([
             // Личный кабинет
             {
                 path: "/dashboard",
-                element: <Dashboard />
+                element: <AuthProvider /> ,
+                children: [
+                    {
+                        index: true,
+                        element: <Dashboard />
+                    }
+                ]
             }
+
         ]
     },
 ]);

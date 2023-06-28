@@ -3,9 +3,7 @@ import MyForm from "../components/UI/MyForm/MyForm";
 import MyInp from "../components/UI/MyInp/MyInp";
 import MyBtn from "../components/UI/MyBtn/MyBtn";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useRegisterMutation} from "../api/features/auth/authApiSlice";
-import {useDispatch} from "react-redux";
-import {setToken} from "../store/features/auth/authSlice";
+import {useGetMeQuery, useRegisterMutation} from "../api/features/auth/authApiSlice";
 import {stringifyErrors} from "../utlis/stringifyErrors";
 import ErrorList from "../components/ErrorList/ErrorList";
 
@@ -15,24 +13,23 @@ const RegisterPage = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
     const [register, ] = useRegisterMutation();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [errors, setErrors] = useState([]);
+    const {refetch: getMeRefetch} = useGetMeQuery({}, {});
 
     // Обработка отправки формы авторизации
     const handleSubmit = async (_) => {
 
         try {
-            const token = await register({email, password, confirm_password: passwordConfirm}).unwrap();
-
-            dispatch(setToken(token));
+            await register({email, password, confirm_password: passwordConfirm}).unwrap();
+            await getMeRefetch();
 
             setEmail("");
             setPassword("");
             navigate('/dashboard');
         } catch (err) {
-            setErrors(stringifyErrors(err.data, {"password": "Пароль", "email": "Email"}));
+            setErrors(stringifyErrors(err.data, {"password": "Пароль", "email": "Email", "confirm_password": "Подтверждение пароля"}));
         }
     }
 
