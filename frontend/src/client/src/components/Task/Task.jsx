@@ -4,10 +4,10 @@ import completed from "../../assets/icons/completed.svg";
 import clocks from "../../assets/icons/clocks.svg";
 import tags from "../../assets/icons/tags.svg";
 
-const Task = ({task}) => {
+const Task = ({task, complete, openEditingTaskModal}) => {
     return (
         <div className={cl.Task + " " + (task.completed && cl.CompletedTask)}>
-            <div className={cl.TaskIndicator}>
+            <div className={cl.TaskIndicator} onClick={() => complete(task.id, !task.completed)}>
                 {
                     task.completed &&
                     <img src={completed} alt="Completed"/>
@@ -15,7 +15,7 @@ const Task = ({task}) => {
             </div>
             <div className={cl.TaskContent}>
                 <div>
-                    <p className={cl.TaskName}>{task.name}</p>
+                    <p className={cl.TaskName} onClick={() => openEditingTaskModal(task)}>{task.name}</p>
                     <p className="muted">{task.description}</p>
                 </div>
                 {/*
@@ -23,10 +23,16 @@ const Task = ({task}) => {
                 Внутри выводимого дива также выводим сроки, если есть, и теги, если есть и непустые.
                 */}
                 {
-                    (task.deadline || (task.tags && task.tags.length)) ?
+                    (task.deadline || (task.tags_for_read && task.tags_for_read.length)) ?
                     <div className="">
-                        {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {task.deadline}</p> }
-                        {(task.tags && task.tags.length) && <p className="small-muted"><img src={tags} alt="Tags"/> {task.tags.join(", ")}</p> }
+                        {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {
+                            new Date(task.deadline).toLocaleDateString("ru-RU", {
+                                month: 'short', day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                            })
+                        }</p> }
+                        {(task.tags_for_read && task.tags_for_read.length) ? <p className="small-muted"><img src={tags} alt="Tags"/> {[...task.tags_for_read.map(tag => tag.name)].join(", ")}</p> : ""}
                     </div>
                         :
                         ""
