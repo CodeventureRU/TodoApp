@@ -12,6 +12,7 @@ class TaskLCSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'description': {'required': False},
             'deadline': {'required': False},
+            'completed': {'required': False},
             'tags': {'required': False, 'write_only': True},
             'tags_for_read': {'source': 'tags_for_read', 'read_only': True},
             'list': {'write_only': True},
