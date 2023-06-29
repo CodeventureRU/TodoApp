@@ -8,7 +8,7 @@ class TaskLCSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'name', 'description', 'deadline', 'tags', 'tags_for_read', 'order', 'list', 'author']
+        fields = ['id', 'name', 'description', 'deadline', 'completed', 'tags', 'tags_for_read', 'order', 'list', 'author']
         extra_kwargs = {
             'description': {'required': False},
             'deadline': {'required': False},
