@@ -6,8 +6,6 @@ services:
     command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
     ports:
       - 8000:8000
-    env_file:
-      - ./.env.prod.server
     networks:
       - app-network
     depends_on:
@@ -18,8 +16,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     networks:
       - app-network
-    env_file:
-      - ./.env.prod.db
 
   frontend:
     build: ./frontend
@@ -27,8 +23,6 @@ services:
       - django
     networks:
       - app-network
-    env_file:
-      - ./.env.prod.frontend
     ports:
       - 3000:3000
 
