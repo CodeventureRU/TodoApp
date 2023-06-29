@@ -1,0 +1,45 @@
+# Base on offical Node.js Alpine image
+FROM node:alpine
+
+# Set working directory
+WORKDIR /usr/app
+
+# Install PM2 globally
+RUN npm install --global pm2
+
+# Copy package.json and package-lock.json before other files
+# Utilise Docker cache to save re-installing dependencies if unchanged
+COPY ./src/package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
+# Copy all files
+COPY ./src ./
+
+# Going to react app
+WORKDIR /usr/app/client
+
+ARG REACT_APP_DEBUG
+ENV REACT_APP_DEBUG=$REACT_APP_DEBUG
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+# Install dependencies
+RUN npm install --production
+
+# Build app
+RUN npm run build
+
+# Back to main app
+WORKDIR /usr/app
+
+# Expose the listening port
+EXPOSE 3000
+
+# Run container as non-root (unprivileged) user
+# The node user is provided in the Node.js Alpine base image
+USER node
+
+# Run npm start script with PM2 when container starts
+CMD [ "pm2-runtime", "npm", "--", "start" ]
