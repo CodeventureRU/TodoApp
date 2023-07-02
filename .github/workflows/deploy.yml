@@ -19,4 +19,6 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
             cd ${{ secrets.SERVER_PROJECT_FOLDER }};
+            git checkout build/github-workflows;
+            git pull;
             docker compose up -d --build;
