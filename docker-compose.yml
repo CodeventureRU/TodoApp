@@ -3,6 +3,8 @@ version: '3.8'
 services:
   django:
     build: ./server
+    env_file:
+      - .env.prod.server
     command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
     ports:
       - 8000:8000
@@ -12,6 +14,8 @@ services:
       - db
   db:
     image: postgres:15-alpine
+    env_file:
+      - .env.prod.db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
@@ -19,6 +23,8 @@ services:
 
   frontend:
     build: ./frontend
+    env_file:
+      - .env.prod.frontend
     depends_on:
       - django
     networks:
@@ -31,9 +37,10 @@ services:
     volumes:
       - static_volume:/home/app/web/staticfiles
     ports:
-      - 1337:80
+      - 5000:5000
     networks:
       - app-network
+      - shared_network
     depends_on:
       - django
       - frontend
@@ -46,3 +53,5 @@ volumes:
 networks:
   app-network:
     driver: bridge
+  shared_network:
+    external: true
