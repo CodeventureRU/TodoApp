@@ -40,6 +40,7 @@ services:
       - 5000:5000
     networks:
       - app-network
+      - shared_network
     depends_on:
       - django
       - frontend
@@ -52,3 +53,5 @@ volumes:
 networks:
   app-network:
     driver: bridge
+  shared_network:
+    external: true
