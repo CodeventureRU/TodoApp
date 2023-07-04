@@ -227,6 +227,7 @@ const Dashboard = () => {
                 setNewTask={setNewTask}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                setTagsManagementModalActive={setTagsManagementModalActive}
                 tags={tags}
                 create={createNewTask}
             />
