@@ -60,9 +60,11 @@ const Dashboard = () => {
     // Управление формой создания задачи
     const [newTaskModalActive, setNewTaskModalActive] = useState(false);
     const [newTask, setNewTask] = useState({
-       list: 1,
-       name: "",
-       tags: [],
+        list: 1,
+        name: "",
+        deadline: undefined,
+        description: "",
+        tags: [],
     });
     const [selectedTags, setSelectedTags] = useState([]);
 
@@ -88,8 +90,11 @@ const Dashboard = () => {
         setNewTask({
             list: 1,
             name: "",
+            deadline: "",
+            description: "",
             tags: [],
         })
+        console.log(newTask);
         setNewTaskModalActive(false);
     }
 
