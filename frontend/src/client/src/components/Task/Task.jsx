@@ -27,9 +27,7 @@ const Task = ({task, complete, openEditingTaskModal}) => {
                     <div className="">
                         {task.deadline && <p className="small-muted"><img src={clocks} alt="Deadline"/> {
                             new Date(task.deadline).toLocaleDateString("ru-RU", {
-                                month: 'short', day: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
+                                month: 'short', day: 'numeric'
                             })
                         }</p> }
                         {(task.tags_for_read && task.tags_for_read.length) ? <p className="small-muted"><img src={tags} alt="Tags"/> {[...task.tags_for_read.map(tag => tag.name)].join(", ")}</p> : ""}
