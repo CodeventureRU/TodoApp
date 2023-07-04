@@ -15,7 +15,10 @@ const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModa
         if (e.to === e.from) {
             let draggedTask = tasks[e.oldIndex];
             let newTaskPosition = e.newIndex;
-            moveTask(draggedTask.id, newTaskPosition, list.id);
+
+            if (e.oldIndex !== e.newIndex) {
+                moveTask(draggedTask.id, newTaskPosition, list.id);
+            }
         }
     }
 
