@@ -5,7 +5,7 @@ from rest_framework import status, generics
 from API.models import List
 from API.permissions import IsAuthor
 from API.logic.functions import get_data
-from API.logic.list.serializers import ListLCSerializer, ListRUDSerializer
+from API.logic.list.serializers import ListLCSerializer
 from API.logic.list.services import create_list, move_list
 
 
@@ -29,7 +29,7 @@ class ListLCView(APIView):
 
 
 class ListRUDView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ListRUDSerializer
+    serializer_class = ListLCSerializer
     permission_classes = [IsAuthor]
     queryset = List.objects.all()
 
