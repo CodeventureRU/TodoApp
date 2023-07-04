@@ -12,9 +12,3 @@ class ListLCSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'tasks': {'read_only': True}
         }
-
-
-class ListRUDSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = List
-        fields = ['id', 'name']
