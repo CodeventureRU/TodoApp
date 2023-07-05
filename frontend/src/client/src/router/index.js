@@ -9,6 +9,7 @@ import logoutAction from "./actions/logout";
 import Dashboard from "../pages/Dashboard";
 import HomePage from "../pages/HomePage";
 import {AuthProvider} from "../providers/AuthProvider";
+import {NotAuthProvider} from "../providers/NotAuthProvider";
 
 export const router = createBrowserRouter([
     {
@@ -19,17 +20,17 @@ export const router = createBrowserRouter([
             // Главная
             {
                 index: true,
-                element: <HomePage />
+                element: <NotAuthProvider><HomePage /></NotAuthProvider>
             },
 
             // Вход и авторизация
             {
                 path: "/login",
-                element: <LoginPage />,
+                element: <NotAuthProvider><LoginPage /></NotAuthProvider>,
             },
             {
                 path: "/register",
-                element: <RegisterPage />,
+                element: <NotAuthProvider><RegisterPage /></NotAuthProvider>,
             },
 
             // События
