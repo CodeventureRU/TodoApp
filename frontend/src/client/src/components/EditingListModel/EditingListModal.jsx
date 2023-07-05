@@ -3,8 +3,9 @@ import MyBtn from "../UI/MyBtn/MyBtn";
 import Modal from "../Modal/Modal";
 import MyInp from "../UI/MyInp/MyInp";
 import MyForm from "../UI/MyForm/MyForm";
+import ErrorList from "../ErrorList/ErrorList";
 
-const EditingListModal = ({editingListModalActive, setEditingListModalActive, editingList, setEditingList, removeList, update}) => {
+const EditingListModal = ({editingListModalActive, setEditingListModalActive, editingList, setEditingList, removeList, update, errors, setErrors}) => {
     return (
         <Modal title={`Список задач`} active={editingListModalActive} setActive={setEditingListModalActive}>
             <MyForm onSubmit={() => {
@@ -20,6 +21,7 @@ const EditingListModal = ({editingListModalActive, setEditingListModalActive, ed
                     value={editingList.name}
                     setValue={value => setEditingList({...editingList, name: value})}
                 />
+                <ErrorList errors={errors} setErrors={setErrors}/>
                 <MyBtn>Сохранить изменение</MyBtn>
             </MyForm>
             <br/><br/>

@@ -5,8 +5,9 @@ import MyBtn from "../UI/MyBtn/MyBtn";
 import Modal from "../Modal/Modal";
 import MyForm from "../UI/MyForm/MyForm";
 import MultiSelect from "../UI/MultiSelect/MultiSelect";
+import ErrorList from "../ErrorList/ErrorList";
 
-const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update, setTagsManagementModalActive}) => {
+const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update, setTagsManagementModalActive, errors, setErrors}) => {
 
     const deadline = new Date(editingTask.deadline);
 
@@ -53,6 +54,7 @@ const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, ed
                 <br/>
                 <p className={"colored pointer"} onClick={_ => setTagsManagementModalActive(true)}>Управление тегами</p>
                 <br/>
+                <ErrorList errors={errors} setErrors={setErrors}/>
                 <MyBtn>Сохранить изменения</MyBtn>
             </MyForm>
             <br/><br/>
