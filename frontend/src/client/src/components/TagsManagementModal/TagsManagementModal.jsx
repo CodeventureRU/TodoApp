@@ -3,8 +3,9 @@ import MyForm from "../UI/MyForm/MyForm";
 import MyInp from "../UI/MyInp/MyInp";
 import MyBtn from "../UI/MyBtn/MyBtn";
 import Modal from "../Modal/Modal";
+import ErrorList from "../ErrorList/ErrorList";
 
-const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalActive, tags, create, remove}) => {
+const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalActive, tags, create, remove, errors, setErrors}) => {
     const [name, setName] = useState("");
 
     return (
@@ -31,6 +32,7 @@ const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalA
                     value={name}
                     setValue={value => setName(value)}
                 />
+                <ErrorList errors={errors} setErrors={setErrors}/>
                 <MyBtn>Создать</MyBtn>
             </MyForm>
         </Modal>

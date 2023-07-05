@@ -12,6 +12,7 @@ import EditingListModal from "../components/EditingListModel/EditingListModal";
 import EditingTaskModal from "../components/EditingTaskModal/EditingTaskModal";
 import {useCreateTagMutation, useGetTagsQuery, useRemoveTagMutation} from "../api/features/tags/tagsApislice";
 import TagsManagementModal from "../components/TagsManagementModal/TagsManagementModal";
+import {stringifyErrors} from "../utlis/stringifyErrors";
 
 const Dashboard = () => {
 
@@ -48,6 +49,9 @@ const Dashboard = () => {
     const [createTagMutation] = useCreateTagMutation();
     const [removeTagMutation] = useRemoveTagMutation();
 
+    // Общий список ошибок
+    const [errors, setErrors] = useState([]);
+
     // Управление модалкой тегов
     const [tagsManagementModalActive, setTagsManagementModalActive] = useState(false);
 
@@ -60,9 +64,11 @@ const Dashboard = () => {
     // Управление формой создания задачи
     const [newTaskModalActive, setNewTaskModalActive] = useState(false);
     const [newTask, setNewTask] = useState({
-       list: 1,
-       name: "",
-       tags: [],
+        list: 1,
+        name: "",
+        deadline: undefined,
+        description: "",
+        tags: [],
     });
     const [selectedTags, setSelectedTags] = useState([]);
 
@@ -74,9 +80,8 @@ const Dashboard = () => {
         tags: [],
     })
 
-    const createNewTask = () => {
+    const createNewTask = async () => {
         let taskData = newTask;
-        console.log(selectedTags);
         taskData.tags = [...selectedTags.map(tag => tag.value)];
         if (!taskData.description) {
             delete taskData.description;
@@ -84,13 +89,22 @@ const Dashboard = () => {
         if (!taskData.deadline) {
             delete taskData.deadline;
         }
-        createTaskMutation(newTask);
-        setNewTask({
-            list: 1,
-            name: "",
-            tags: [],
-        })
-        setNewTaskModalActive(false);
+
+        try {
+            await createTaskMutation(newTask).unwrap();
+            setErrors([]);
+            setNewTask({
+                list: 1,
+                name: "",
+                deadline: "",
+                description: "",
+                tags: [],
+            });
+            setNewTaskModalActive(false);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
+
     }
 
     // Управление формой создания списка задач
@@ -98,42 +112,79 @@ const Dashboard = () => {
     const [newList, setNewList] = useState({
         name: "",
     });
+    
+    const errorsAliases = {
+        "name": "Название",
+        "description": "Описание",
+        "deadline": "Срок"
+    };
 
-    const createTag = (data) => {
-        createTagMutation(data);
+    const createTag = async (data) => {
+        try {
+            await createTagMutation(data).unwrap();
+            setErrors([]);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
-    const removeTag = (id) => {
-        removeTagMutation(id);
+    const removeTag = async (id) => {
+        try {
+            await removeTagMutation(id).unwrap();
+            setErrors([]);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
-    const createNewList = () => {
-        createListMutation(newList);
-        setNewListModalActive(false);
-        setNewList({
-            name: "",
-        });
+    const createNewList = async () => {
+        try {
+            await createListMutation(newList).unwrap();
+            setErrors([]);
+            setNewListModalActive(false);
+            setNewList({
+                name: "",
+            });
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
+
     }
 
-    const removeList = (id) => {
-        removeListMutation(id);
-        setEditingListModalActive(false);
+    const removeList = async (id) => {
+        try {
+            await removeListMutation(id).unwrap();
+            setErrors([]);
+            setEditingListModalActive(false);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
-    const removeTask = (id) => {
-        removeTaskMutation(id);
-        setEditingTaskModalActive(false);
+    const removeTask = async (id) => {
+        try {
+            await removeTaskMutation(id).unwrap();
+            setErrors([]);
+            setEditingTaskModalActive(false);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
-    const updateList = () => {
-        updateListMutation({
-            id: editingList.id,
-            name: editingList.name
-        });
-        setEditingListModalActive(false);
+    const updateList = async () => {
+        try {
+            await updateListMutation({
+                id: editingList.id,
+                name: editingList.name
+            }).unwrap();
+            setErrors([]);
+            setEditingListModalActive(false);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
-    const updateTask = () => {
+    const updateTask = async () => {
         let taskData = {
             id: editingTask.id,
             name: editingTask.name,
@@ -150,9 +201,13 @@ const Dashboard = () => {
         if (!editingTask.description) {
             delete taskData.description;
         }
-
-        updateTaskMutation(taskData);
-        setEditingTaskModalActive(false);
+        try {
+            await updateTaskMutation(taskData).unwrap();
+            setErrors([]);
+            setEditingTaskModalActive(false);
+        } catch (err) {
+            setErrors(stringifyErrors(err.data, errorsAliases));
+        }
     }
 
     const moveList = (id, order) => {
@@ -182,15 +237,18 @@ const Dashboard = () => {
         setLists([...lists]);
         setNewTaskModalActive(true);
         setNewTask({...newTask, list});
+        setErrors([]);
     }
 
     const openNewListModal = () => {
         setNewListModalActive(true);
+        setErrors([]);
     }
 
     const openEditingListModal = (list) => {
         setEditingList(list);
         setEditingListModalActive(true);
+        setErrors([]);
     }
 
     const openEditingTaskModal = (task) => {
@@ -200,6 +258,7 @@ const Dashboard = () => {
         }))]);
         setEditingTask(task);
         setEditingTaskModalActive(true);
+        setErrors([]);
     }
 
 
@@ -227,7 +286,10 @@ const Dashboard = () => {
                 setNewTask={setNewTask}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                setTagsManagementModalActive={setTagsManagementModalActive}
                 tags={tags}
+                errors={errors}
+                setErrors={setErrors}
                 create={createNewTask}
             />
 
@@ -236,6 +298,8 @@ const Dashboard = () => {
                 setNewList={setNewList}
                 newListModalActive={newListModalActive}
                 setNewListModalActive={setNewListModalActive}
+                errors={errors}
+                setErrors={setErrors}
                 create={createNewList}
             />
 
@@ -244,6 +308,8 @@ const Dashboard = () => {
                 setEditingListModalActive={setEditingListModalActive}
                 editingList={editingList}
                 setEditingList={setEditingList}
+                errors={errors}
+                setErrors={setErrors}
                 removeList={removeList}
                 update={updateList}
             />
@@ -257,6 +323,8 @@ const Dashboard = () => {
                 setSelectedTags={setSelectedTags}
                 setTagsManagementModalActive={setTagsManagementModalActive}
                 tags={tags}
+                errors={errors}
+                setErrors={setErrors}
                 update={updateTask}
                 removeTask={removeTask}
             />
@@ -265,7 +333,8 @@ const Dashboard = () => {
                 tagsManagementModalActive={tagsManagementModalActive}
                 setTagsManagementModalActive={setTagsManagementModalActive}
                 tags={tags}
-
+                errors={errors}
+                setErrors={setErrors}
                 create={createTag}
                 remove={removeTag}
             />

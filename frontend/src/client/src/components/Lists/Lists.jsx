@@ -10,7 +10,9 @@ const Lists = ({lists, setLists, openNewTaskModal, openNewListModal, openEditing
         let draggedList = lists[e.oldIndex];
         let newListPosition = e.newIndex;
 
-        moveList(draggedList.id, newListPosition);
+        if (e.oldIndex !== e.newIndex) {
+            moveList(draggedList.id, newListPosition);
+        }
     }
 
     return (

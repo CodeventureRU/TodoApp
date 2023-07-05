@@ -23,7 +23,7 @@ const Navbar = () => {
                             </ul>
                         :
                             <ul className={cl.NavbarMenu}>
-                                <li><NavLink to={"/dashboard"} className={"colored"}>{ user.email }</NavLink></li>
+                                <li className={"colored"}>{ user.email }</li>
                                 <li><RouterForm method={"post"} action={"logout"}><MyBtn small={true}>Выйти</MyBtn></RouterForm> </li>
                             </ul>
                     }
