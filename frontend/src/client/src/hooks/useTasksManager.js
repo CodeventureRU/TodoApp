@@ -1,0 +1,155 @@
+import {
+    useCreateTaskMutation,
+    useMoveTaskMutation,
+    useRemoveTaskMutation,
+    useUpdateTaskMutation
+} from "../api/features/tasks/tasksApiSlice";
+import {useEntityWithModal} from "./useEntityWithModal";
+
+const useCreatingTask = () => {
+    return useEntityWithModal({
+        list: null,
+        name: '',
+        description: '',
+        deadline: undefined,
+        tags: [],
+        selectedTags: [],
+    })
+}
+
+const useEditingTask = () => {
+    return useEntityWithModal({
+        list: null,
+        name: '',
+        tags: [],
+        selectedTags: [],
+    })
+}
+
+export const useTasksManager = () => {
+
+    // Использование API-хуков
+    const [createTaskMutation] = useCreateTaskMutation();
+    const [updateTaskMutation] = useUpdateTaskMutation();
+    const [moveTaskMutation] = useMoveTaskMutation();
+    const [removeTaskMutation] = useRemoveTaskMutation();
+
+    // Определение создаваемой и редактируемой задачи
+    const creatingTask = useCreatingTask();
+    const editingTask = useEditingTask();
+
+    // Функции
+    const functions = {
+        // Открытие / заркытие модальных окон
+        openCreatingTaskModal: (list) => {
+            creatingTask.clear();
+            creatingTask.setData({...creatingTask, list: list});
+            creatingTask.setModal(true);
+        },
+
+        closeCreatingTaskModal: () => {
+            creatingTask.setModal(false);
+            creatingTask.clear();
+        },
+
+        openEditingTaskModal: (data) => {
+            editingTask.clear();
+            editingTask.setData({...data, selectedTags: [...data.tags_for_read.map(tag => ({
+                value: tag.id,
+                name: tag.name
+            }))]});
+            editingTask.setModal(true);
+        },
+
+        closeEditingTaskModal: () => {
+            editingTask.setModal(false);
+            editingTask.clear();
+        },
+
+        // Обработка создания, изменения, перемещения, завершения и удаления задачи
+        createTask: async () => {
+            const creatingTaskData = creatingTask.data;
+            let taskData = {
+                list: creatingTaskData.list,
+                name: creatingTaskData.name,
+                deadline: creatingTaskData.deadline,
+                description: creatingTaskData.description,
+            };
+            taskData.tags = [...creatingTaskData.selectedTags.map(tag => tag.value)];
+
+            if (!creatingTaskData.description) {
+                delete taskData.description;
+            }
+            if (!creatingTaskData.deadline) {
+                delete taskData.deadline;
+            }
+
+            try {
+                await createTaskMutation(taskData).unwrap();
+                creatingTask.setErrors({});
+                creatingTask.setModal(false);
+            } catch (err) {
+                creatingTask.setErrors(err.data);
+            }
+        },
+
+        updateTask: async () => {
+            const editingTaskData = editingTask.data;
+            let taskData = {
+                id: editingTaskData.id,
+                name: editingTaskData.name,
+                deadline: editingTaskData.deadline,
+                description: editingTaskData.description
+            };
+
+            taskData.tags = [...editingTaskData.selectedTags.map(tag => tag.value)];
+
+            if (!editingTaskData.deadline) {
+                delete taskData.deadline;
+            }
+
+            if (!editingTaskData.description) {
+                delete taskData.description;
+            }
+            try {
+                await updateTaskMutation(taskData).unwrap();
+                editingTask.setErrors({});
+                editingTask.setModal(false);
+            } catch (err) {
+                editingTask.setErrors(err.data);
+            }
+        },
+
+        completeTask: async (id, completed) => {
+            await updateTaskMutation({
+                id,
+                completed
+            })
+        },
+
+        moveTask: async (id, order, list_id) => {
+            await moveTaskMutation({
+                id,
+                order,
+                list_id
+            });
+        },
+
+        removeTask: async (id) => {
+            try {
+                await removeTaskMutation(id).unwrap();
+                editingTask.clear();
+                editingTask.setModal(false);
+            } catch (err) {
+                editingTask.setErrors(err.data);
+            }
+        },
+    }
+
+    // Возвращаем объект
+    return {
+        editingTask,
+        creatingTask,
+        ...functions,
+    }
+}
