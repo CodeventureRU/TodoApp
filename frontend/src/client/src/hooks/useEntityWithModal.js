@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState} from "react";
 import {stringifyErrors} from "../utlis/stringifyErrors";
 
 export const useEntityWithModal = (initialState, fieldsAliases={
@@ -7,23 +7,24 @@ export const useEntityWithModal = (initialState, fieldsAliases={
     "deadline": "Срок"
 }) => {
 
-    const [entity, setEntity] = useState({
-        data: initialState,
-        modal: false,
-        errors: [],
-    });
+    const [data, setData] = useState(initialState);
+    const [modal, setModal] = useState(false);
+    const [errors, setErrors] = useState([]);
 
     return {
-        data: entity.data,
-        modal: entity.modal,
-        errors: entity.errors,
+        data,
+        modal,
+        errors,
 
-        setData: data => setEntity({...entity, data: data}),
-        setModal: modal => setEntity({...entity, modal: modal}),
-        setErrors: errors => setEntity({...entity, errors: stringifyErrors(errors, fieldsAliases)}),
+        setData,
+        setModal,
+        setErrors: errors => setErrors(stringifyErrors(errors, fieldsAliases)),
         clear: () => {
-            setEntity({...entity, data: initialState});
-            setEntity({...entity, errors: []});
+            setErrors([]);
+            setData(initialState);
         },
+        setOnClear: (data) => {
+            setData({...initialState, ...data});
+        }
     }
 }
