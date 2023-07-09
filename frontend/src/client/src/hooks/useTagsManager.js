@@ -39,10 +39,14 @@ export const useTagsManager = () => {
             creatingTag.clear();
         },
 
-        createTag: async (data) => {
+        createTag: async () => {
+            const creatingTagData = creatingTag.data;
+            let tagData = {
+                name: creatingTagData.name,
+            };
             try {
-                await createTagMutation(data).unwrap();
-                creatingTag.setErrors({});
+                await createTagMutation(tagData).unwrap();
+                creatingTag.clear();
             } catch (err) {
                 creatingTag.setErrors(err.data);
             }
