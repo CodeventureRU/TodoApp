@@ -7,11 +7,11 @@ import Modal from "../Modal/Modal";
 import MyForm from "../UI/MyForm/MyForm";
 import ErrorList from "../ErrorList/ErrorList";
 
-const CreatingTaskModal = ({newTaskModalActive, setNewTaskModalActive, newTask, setNewTask, selectedTags, setSelectedTags, tags, create, setTagsManagementModalActive, errors, setErrors}) => {
+const CreatingTaskModal = ({tasksManager, tagsManager}) => {
     return (
-        <Modal title={"Новая задача"} active={newTaskModalActive} setActive={setNewTaskModalActive}>
+        <Modal title={"Новая задача"} active={tasksManager.creatingTask.modal} setActive={tasksManager.creatingTask.setModal}>
             <MyForm onSubmit={() => {
-                create();
+                tasksManager.createTask();
             }}>
                 {/*
                 Для каждого поля мы изменяем объект новой задачи
@@ -20,36 +20,36 @@ const CreatingTaskModal = ({newTaskModalActive, setNewTaskModalActive, newTask, 
                     name={"name"}
                     label={"Название"}
                     group={true}
-                    value={newTask.name}
-                    setValue={value => setNewTask({...newTask, name: value})}
+                    value={tasksManager.creatingTask.data.name}
+                    setValue={value => tasksManager.creatingTask.setData({...tasksManager.creatingTask.data, name: value})}
                 />
                 <MyInp
                     type={"date"}
                     name={"deadline"}
                     label={"Срок выполнения"}
                     group={true}
-                    value={newTask.deadline}
-                    setValue={value => setNewTask({...newTask, deadline: value})}
+                    value={tasksManager.creatingTask.data.deadline}
+                    setValue={value => tasksManager.creatingTask.setData({...tasksManager.creatingTask.data, deadline: value})}
                 />
                 <MyTextarea
                     name={"description"}
                     label={"Описание"}
                     rows={3}
                     group={true}
-                    value={newTask.description}
-                    setValue={value => setNewTask({...newTask, description: value})}
+                    value={tasksManager.creatingTask.data.description}
+                    setValue={value => tasksManager.creatingTask.setData({...tasksManager.creatingTask.data, description: value})}
                 />
                 <MultiSelect
                     name={"tags"}
                     label={"Теги"}
-                    selected={selectedTags}
-                    setSelected={setSelectedTags}
-                    options={tags.map(tag => ({value: tag.id, name: tag.name}))}
+                    selected={tasksManager.creatingTask.data.selectedTags}
+                    setSelected={value => tasksManager.creatingTask.setData({...tasksManager.creatingTask.data, selectedTags: value})}
+                    options={tagsManager.tags.map(tag => ({value: tag.id, name: tag.name}))}
                 />
                 <br/>
-                <p className={"colored pointer"} onClick={_ => setTagsManagementModalActive(true)}>Управление тегами</p>
+                <p className={"colored pointer"} onClick={tagsManager.openCreatingTagModal}>Управление тегами</p>
                 <br/>
-                <ErrorList errors={errors} setErrors={setErrors}/>
+                <ErrorList errors={tasksManager.creatingTask.errors} setErrors={tasksManager.creatingTask.setErrors}/>
                 <MyBtn>Создать</MyBtn>
             </MyForm>
         </Modal>
