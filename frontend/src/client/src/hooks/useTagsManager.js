@@ -34,11 +34,6 @@ export const useTagsManager = () => {
             creatingTag.setModal(true);
         },
 
-        closeCreatingTagModal: () => {
-            creatingTag.setModal(false);
-            creatingTag.clear();
-        },
-
         createTag: async () => {
             const creatingTagData = creatingTag.data;
             let tagData = {

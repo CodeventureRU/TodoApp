@@ -40,15 +40,10 @@ export const useTasksManager = () => {
 
     // Функции
     const functions = {
-        // Открытие / заркытие модальных окон
+        // Открытие модальных окон
         openCreatingTaskModal: (list) => {
             creatingTask.setOnClear({list});
             creatingTask.setModal(true);
-        },
-
-        closeCreatingTaskModal: () => {
-            creatingTask.setModal(false);
-            creatingTask.clear();
         },
 
         openEditingTaskModal: (data) => {
@@ -57,11 +52,6 @@ export const useTasksManager = () => {
                 name: tag.name
             }))]});
             editingTask.setModal(true);
-        },
-
-        closeEditingTaskModal: () => {
-            editingTask.setModal(false);
-            editingTask.clear();
         },
 
         // Обработка создания, изменения, перемещения, завершения и удаления задачи

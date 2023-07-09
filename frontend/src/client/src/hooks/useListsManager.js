@@ -46,25 +46,15 @@ export const useListsManager = () => {
 
     // Функции
     const functions = {
-        // Открытие / заркытие модальных окон
+        // Открытие модальных окон
         openCreatingListModal: () => {
             creatingList.clear();
             creatingList.setModal(true);
         },
 
-        closeCreatingListModal: () => {
-            creatingList.setModal(false);
-            creatingList.clear();
-        },
-
         openEditingListModal: (data) => {
             editingList.setOnClear(data);
             editingList.setModal(true);
-        },
-
-        closeEditingListModal: () => {
-            editingList.setModal(false);
-            editingList.clear();
         },
 
         // Обработка создания, изменения, перемещения и удаления списка задач
