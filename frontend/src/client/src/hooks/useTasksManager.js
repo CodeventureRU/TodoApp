@@ -11,7 +11,7 @@ const useCreatingTask = () => {
         list: null,
         name: '',
         description: '',
-        deadline: undefined,
+        deadline: '',
         tags: [],
         selectedTags: [],
     })
@@ -42,8 +42,7 @@ export const useTasksManager = () => {
     const functions = {
         // Открытие / заркытие модальных окон
         openCreatingTaskModal: (list) => {
-            creatingTask.clear();
-            creatingTask.setData({...creatingTask, list: list});
+            creatingTask.setOnClear({list});
             creatingTask.setModal(true);
         },
 
@@ -53,8 +52,7 @@ export const useTasksManager = () => {
         },
 
         openEditingTaskModal: (data) => {
-            editingTask.clear();
-            editingTask.setData({...data, selectedTags: [...data.tags_for_read.map(tag => ({
+            editingTask.setOnClear({...data, selectedTags: [...data.tags_for_read.map(tag => ({
                 value: tag.id,
                 name: tag.name
             }))]});
@@ -88,6 +86,7 @@ export const useTasksManager = () => {
                 await createTaskMutation(taskData).unwrap();
                 creatingTask.setErrors({});
                 creatingTask.setModal(false);
+                creatingTask.clear();
             } catch (err) {
                 creatingTask.setErrors(err.data);
             }
