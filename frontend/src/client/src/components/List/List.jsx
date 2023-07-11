@@ -4,7 +4,7 @@ import cl from "./List.module.css";
 import options from "../../assets/icons/options.svg";
 import {ReactSortable} from "react-sortablejs";
 
-const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModal, moveTask, draggingTask, setDraggingTask, completeTask}) => {
+const List = ({list, tasksManager, draggingTask, setDraggingTask, listsManager}) => {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModa
             let newTaskPosition = e.newIndex;
 
             if (e.oldIndex !== e.newIndex) {
-                moveTask(draggedTask.id, newTaskPosition, list.id);
+                tasksManager.moveTask(draggedTask.id, newTaskPosition, list.id);
             }
         }
     }
@@ -25,13 +25,13 @@ const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModa
     const handleAdd = e => {
         let draggedTask = draggingTask;
         let newTaskPosition = e.newIndex;
-        moveTask(draggedTask.id, newTaskPosition, list.id);
+        tasksManager.moveTask(draggedTask.id, newTaskPosition, list.id);
     }
 
     return (
         <div className={cl.List}>
             <div className={cl.ListHeader}>
-                <img src={options} onClick={() => openEditingListModal(list)} alt="Options" className={"pointer"}/>
+                <img src={options} onClick={() => listsManager.openEditingListModal(list)} alt="Options" className={"pointer"}/>
                 {list.name}
             </div>
             {/*
@@ -49,11 +49,11 @@ const List = ({list, openNewTaskModal, openEditingListModal, openEditingTaskModa
             >
                 {
                     tasks.map(task =>
-                        <Task key={task.id} task={task} complete={completeTask} openEditingTaskModal={openEditingTaskModal}/>
+                        <Task key={task.id} task={task} tasksManager={tasksManager}/>
                     )
                 }
             </ReactSortable>
-            <div className={cl.ListFooter} onClick={() => openNewTaskModal(list.id)}>
+            <div className={cl.ListFooter} onClick={() => tasksManager.openCreatingTaskModal(list.id)}>
                 +
             </div>
 

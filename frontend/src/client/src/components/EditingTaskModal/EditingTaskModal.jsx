@@ -7,61 +7,63 @@ import MyForm from "../UI/MyForm/MyForm";
 import MultiSelect from "../UI/MultiSelect/MultiSelect";
 import ErrorList from "../ErrorList/ErrorList";
 
-const EditingTaskModal = ({editingTaskModalActive, setEditingTaskModalActive, editingTask, setEditingTask, selectedTags, setSelectedTags, tags, removeTask, update, setTagsManagementModalActive, errors, setErrors}) => {
+const EditingTaskModal = ({tasksManager, tagsManager}) => {
 
-    const deadline = new Date(editingTask.deadline);
+    const deadline = new Date(tasksManager.editingTask.data.deadline);
 
     return (
-        <Modal title={"Задача"} active={editingTaskModalActive} setActive={setEditingTaskModalActive}>
+        <Modal title={"Новая задача"} active={tasksManager.editingTask.modal} setActive={tasksManager.editingTask.setModal}>
             <MyForm onSubmit={() => {
-                update();
+                tasksManager.updateTask();
             }}>
                 <MyInp
                     name={"name"}
                     label={"Название"}
                     group={true}
-                    value={editingTask.name}
-                    setValue={value => setEditingTask({...editingTask, name: value})}
+                    value={tasksManager.editingTask.data.name}
+                    setValue={value => {
+                        tasksManager.editingTask.setData({...tasksManager.editingTask.data, name: value});
+                    }}
                 />
                 <MyInp
                     type={"date"}
                     name={"deadline"}
                     label={"Срок выполнения"}
                     group={true}
-                    value={editingTask.deadline
+                    value={tasksManager.editingTask.data.deadline
                         ?
                         deadline.getFullYear()+"-"+(("0" + (deadline.getMonth() + 1)).slice(-2))+"-"+(("0" + deadline.getDate()).slice(-2))
                         :
                         ""
                     }
-                    setValue={value => setEditingTask({...editingTask, deadline: value})}
+                    setValue={value => tasksManager.editingTask.setData({...tasksManager.editingTask.data, deadline: value})}
                 />
                 <MyTextarea
                     name={"description"}
                     label={"Описание"}
                     rows={3}
                     group={true}
-                    value={editingTask.description}
-                    setValue={value => setEditingTask({...editingTask, description: value})}
+                    value={tasksManager.editingTask.data.description}
+                    setValue={value => tasksManager.editingTask.setData({...tasksManager.editingTask.data, description: value})}
                 />
                 <MultiSelect
                     name={"tags"}
                     label={"Теги"}
-                    selected={selectedTags}
-                    setSelected={setSelectedTags}
-                    options={tags.map(tag => ({value: tag.id, name: tag.name}))}
+                    selected={tasksManager.editingTask.data.selectedTags}
+                    setSelected={value => tasksManager.editingTask.setData({...tasksManager.editingTask.data, selectedTags: value})}
+                    options={tagsManager.tags.map(tag => ({value: tag.id, name: tag.name}))}
                 />
                 <br/>
-                <p className={"colored pointer"} onClick={_ => setTagsManagementModalActive(true)}>Управление тегами</p>
+                <p className={"colored pointer"} onClick={tagsManager.openCreatingTagModal}>Управление тегами</p>
                 <br/>
-                <ErrorList errors={errors} setErrors={setErrors}/>
+                <ErrorList errors={tasksManager.editingTask.errors} setErrors={tasksManager.editingTask.setErrors}/>
                 <MyBtn>Сохранить изменения</MyBtn>
             </MyForm>
             <br/><br/>
             <hr/>
             <br/><br/>
             <MyBtn onClick={() => {
-                removeTask(editingTask.id);
+                tasksManager.removeTask(tasksManager.editingTask.data.id);
             }}>Удалить</MyBtn>
         </Modal>
     );

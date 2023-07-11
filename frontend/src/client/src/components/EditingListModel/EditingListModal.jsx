@@ -5,11 +5,11 @@ import MyInp from "../UI/MyInp/MyInp";
 import MyForm from "../UI/MyForm/MyForm";
 import ErrorList from "../ErrorList/ErrorList";
 
-const EditingListModal = ({editingListModalActive, setEditingListModalActive, editingList, setEditingList, removeList, update, errors, setErrors}) => {
+const EditingListModal = ({listsManager}) => {
     return (
-        <Modal title={`Список задач`} active={editingListModalActive} setActive={setEditingListModalActive}>
+        <Modal title={`Список задач`} active={listsManager.editingList.modal} setActive={listsManager.editingList.setModal}>
             <MyForm onSubmit={() => {
-                update();
+                listsManager.updateList();
             }}>
                 {/*
                 Для каждого поля мы изменяем объект нового списка задач
@@ -18,17 +18,17 @@ const EditingListModal = ({editingListModalActive, setEditingListModalActive, ed
                     name={"name"}
                     label={"Название"}
                     group={true}
-                    value={editingList.name}
-                    setValue={value => setEditingList({...editingList, name: value})}
+                    value={listsManager.editingList.data.name}
+                    setValue={value => listsManager.editingList.setData({...listsManager.editingList.data, name: value})}
                 />
-                <ErrorList errors={errors} setErrors={setErrors}/>
+                <ErrorList errors={listsManager.editingList.errors} setErrors={listsManager.editingList.setErrors}/>
                 <MyBtn>Сохранить изменение</MyBtn>
             </MyForm>
             <br/><br/>
             <hr/>
             <br/><br/>
             <MyBtn onClick={() => {
-                removeList(editingList.id);
+                listsManager.removeList(listsManager.editingList.data.id);
             }}>Удалить</MyBtn>
         </Modal>
     );

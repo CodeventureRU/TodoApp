@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import MyForm from "../UI/MyForm/MyForm";
 import MyInp from "../UI/MyInp/MyInp";
 import MyBtn from "../UI/MyBtn/MyBtn";
 import Modal from "../Modal/Modal";
 import ErrorList from "../ErrorList/ErrorList";
 
-const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalActive, tags, create, remove, errors, setErrors}) => {
-    const [name, setName] = useState("");
+const TagsManagementModal = ({tagsManager}) => {
 
     return (
-        <Modal title={"Управление тегами"} active={tagsManagementModalActive} setActive={setTagsManagementModalActive}>
-            {tags.map(tag =>
-                <div><span className={"colored pointer"} onClick={_ => remove(tag.id)}>×</span> {tag.name}</div>
+        <Modal title={"Управление тегами"} active={tagsManager.creatingTag.modal} setActive={tagsManager.creatingTag.setModal}>
+            {tagsManager.tags.map(tag =>
+                <div key={tag.id}><span className={"colored pointer"} onClick={_ => tagsManager.removeTag(tag.id)}>×</span> {tag.name}</div>
             )}
             <br/><br/>
             <hr/>
@@ -19,8 +18,7 @@ const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalA
             <h2>Новый тег</h2>
             <br/>
             <MyForm onSubmit={() => {
-                setName("");
-                create({name});
+                tagsManager.createTag();
             }}>
                 {/*
                 Для каждого поля мы изменяем объект нового списка задач
@@ -29,10 +27,10 @@ const TagsManagementModal = ({tagsManagementModalActive, setTagsManagementModalA
                     name={"name"}
                     label={"Название"}
                     group={true}
-                    value={name}
-                    setValue={value => setName(value)}
+                    value={tagsManager.creatingTag.name}
+                    setValue={value => tagsManager.creatingTag.setData({...tagsManager.creatingTag.data, name: value})}
                 />
-                <ErrorList errors={errors} setErrors={setErrors}/>
+                <ErrorList errors={tagsManager.creatingTag.errors} setErrors={tagsManager.creatingTag.setErrors}/>
                 <MyBtn>Создать</MyBtn>
             </MyForm>
         </Modal>

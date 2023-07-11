@@ -5,11 +5,11 @@ import Modal from "../Modal/Modal";
 import MyForm from "../UI/MyForm/MyForm";
 import ErrorList from "../ErrorList/ErrorList";
 
-const CreatingListModal = ({newListModalActive, setNewListModalActive, newList, setNewList, create, errors, setErrors}) => {
+const CreatingListModal = ({listsManager}) => {
     return (
-        <Modal title={"Новый список задач"} active={newListModalActive} setActive={setNewListModalActive}>
+        <Modal title={"Новый список задач"} active={listsManager.creatingList.modal} setActive={listsManager.creatingList.setModal}>
             <MyForm onSubmit={() => {
-                create();
+                listsManager.createList();
             }}>
                 {/*
                 Для каждого поля мы изменяем объект нового списка задач
@@ -18,10 +18,10 @@ const CreatingListModal = ({newListModalActive, setNewListModalActive, newList, 
                     name={"name"}
                     label={"Название"}
                     group={true}
-                    value={newList.name}
-                    setValue={value => setNewList({...newList, name: value})}
+                    value={listsManager.creatingList.data.name}
+                    setValue={value => listsManager.creatingList.setData({...listsManager.creatingList.data, name: value})}
                 />
-                <ErrorList errors={errors} setErrors={setErrors}/>
+                <ErrorList errors={listsManager.creatingList.errors} setErrors={listsManager.creatingList.setErrors}/>
                 <MyBtn>Создать</MyBtn>
             </MyForm>
         </Modal>
