@@ -50,7 +50,7 @@ class Tag(models.Model):
 
 class Task(OrderedModel):
     name = models.CharField(max_length=64)
-    description = models.CharField(max_length=256)
+    description = models.CharField(max_length=256, blank=True)
     deadline = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, blank=True)
