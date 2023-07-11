@@ -65,11 +65,8 @@ export const useTasksManager = () => {
             };
             taskData.tags = [...creatingTaskData.selectedTags.map(tag => tag.value)];
 
-            if (!creatingTaskData.description) {
-                delete taskData.description;
-            }
             if (!creatingTaskData.deadline) {
-                delete taskData.deadline;
+                taskData.deadline = null;
             }
 
             try {
@@ -94,12 +91,9 @@ export const useTasksManager = () => {
             taskData.tags = [...editingTaskData.selectedTags.map(tag => tag.value)];
 
             if (!editingTaskData.deadline) {
-                delete taskData.deadline;
+                taskData.deadline = null;
             }
 
-            if (!editingTaskData.description) {
-                delete taskData.description;
-            }
             try {
                 await updateTaskMutation(taskData).unwrap();
                 editingTask.setErrors({});
