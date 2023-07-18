@@ -76,6 +76,7 @@ export const useListsManager = () => {
         updateList: async () => {
             const editingListData = editingList.data;
             let listData = {
+                id: editingListData.id,
                 name: editingListData.name,
             };
 
